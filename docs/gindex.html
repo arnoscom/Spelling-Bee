@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jad Spelling Bee</title>
+<title>Upload Spelling Bee</title>
 <style>
 body{font-family:Arial;background:#f4f4f4;text-align:center;padding:20px}
 .container{max-width:1000px;margin:auto;background:white;padding:20px;border-radius:20px}
@@ -9,9 +9,9 @@ button{padding:12px 20px;margin:8px;font-size:18px}
 #wordBox{font-size:42px;font-weight:bold;background:linear-gradient(135deg,#4facfe,#00f2fe);color:white;padding:30px;border-radius:20px;margin:20px;line-height:1.4;overflow:visible;white-space:normal}
 #timer{font-size:40px;color:red}
 </style></head><body><div class="container">
-<h1>Jad Spelling Bee</h1>
-
-<details><summary style="font-size:24px">📚 Show / Hide Words</summary><table class='wordTable'><tr><td>After</td><td>Drink</td><td>Button</td><td>Apricot</td></tr><tr><td>All</td><td>Pretty</td><td>Fork</td><td>Spring</td></tr><tr><td>Animal</td><td>Foggy</td><td>Answer</td><td>Orange</td></tr><tr><td>Baby</td><td>Pull</td><td>Family</td><td>Interesting</td></tr><tr><td>Before</td><td>Long</td><td>Igloo</td><td>Horror</td></tr><tr><td>Birthday</td><td>Little</td><td>Listen</td><td>Remember</td></tr><tr><td>Bring</td><td>Mother</td><td>Harm</td><td>Weather</td></tr><tr><td>Clean</td><td>Mistake</td><td>Photo</td><td>Women</td></tr><tr><td>Buy</td><td>Today</td><td>Evening</td><td>Favorite</td></tr><tr><td>Again</td><td>Start</td><td>Sale</td><td>Underrate</td></tr><tr><td>Always</td><td>Desk</td><td>Super</td><td>Yacht</td></tr><tr><td>Around</td><td>Nice</td><td>Fish</td><td>Together</td></tr><tr><td>Because</td><td>Windy</td><td>Among</td><td>Yesterday</td></tr><tr><td>Better</td><td>High</td><td>Bend</td><td>Mile</td></tr><tr><td>Black</td><td>Winner</td><td>Blanket</td><td>Picture</td></tr><tr><td>Brother</td><td>Score</td><td>Walk</td><td>Hungry</td></tr><tr><td>Busy</td><td>Player</td><td>Root</td><td>Teacher</td></tr><tr><td>Carry</td><td>Fug</td><td>Mirror</td><td>Restroom</td></tr><tr><td>Close</td><td>France</td><td>Zebra</td><td>Coffee</td></tr><tr><td>Come</td><td>Basket</td><td>Tail</td><td>Whiteboard</td></tr><tr><td>Happy</td><td>Warm</td><td>Purple</td><td>Curtain</td></tr><tr><td>Funny</td><td>Cape</td><td>Nest</td><td>Gorilla</td></tr><tr><td>Finish</td><td>Show</td><td>Duck</td><td>Telephone</td></tr><tr><td>Could</td><td>Venom</td><td>Roll</td><td></td></tr><tr><td>Dance</td><td>Ring</td><td>Rest</td><td></td></tr><tr><td>Kind</td><td>Sleep</td><td>Lemon</td><td></td></tr></table></details>
+<h1>Upload Spelling Bee</h1>
+<input type="file" id="fileInput" accept=".txt,.xlsx,.xls"><div id="loaded"></div>
+<details><summary style="font-size:24px">📚 Show / Hide Words</summary></details>
 <br><label>Timer:</label><select id="timeInput"><option value="3" >3</option><option value="4" >4</option><option value="5" >5</option><option value="6" >6</option><option value="7" >7</option><option value="8" >8</option><option value="9" >9</option><option value="10" selected>10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option></select><br><br>
 <button onclick="startGame()">Start</button>
 <div id="wordBox">Press Start</div>
@@ -25,7 +25,7 @@ button{padding:12px 20px;margin:8px;font-size:18px}
 <div style="margin-top:20px;text-align:left"><h2>Wrong Words</h2><div id="wrongList">No mistakes yet</div></div>
 </div>
 <script>
-let words=['After', 'All', 'Animal', 'Baby', 'Before', 'Birthday', 'Bring', 'Clean', 'Buy', 'Again', 'Always', 'Around', 'Because', 'Better', 'Black', 'Brother', 'Busy', 'Carry', 'Close', 'Come', 'Happy', 'Funny', 'Finish', 'Could', 'Dance', 'Kind', 'Drink', 'Pretty', 'Foggy', 'Pull', 'Long', 'Little', 'Mother', 'Mistake', 'Today', 'Start', 'Desk', 'Nice', 'Windy', 'High', 'Winner', 'Score', 'Player', 'Fug', 'France', 'Basket', 'Warm', 'Cape', 'Show', 'Venom', 'Ring', 'Sleep', 'Button', 'Fork', 'Answer', 'Family', 'Igloo', 'Listen', 'Harm', 'Photo', 'Evening', 'Sale', 'Super', 'Fish', 'Among', 'Bend', 'Blanket', 'Walk', 'Root', 'Mirror', 'Zebra', 'Tail', 'Purple', 'Nest', 'Duck', 'Roll', 'Rest', 'Lemon', 'Apricot', 'Spring', 'Orange', 'Interesting', 'Horror', 'Remember', 'Weather', 'Women', 'Favorite', 'Underrate', 'Yacht', 'Together', 'Yesterday', 'Mile', 'Picture', 'Hungry', 'Teacher', 'Restroom', 'Coffee', 'Whiteboard', 'Curtain', 'Gorilla', 'Telephone'];
+let words=[];
 let remainingWords=[];
 let currentWord="";
 let timer;
@@ -85,4 +85,28 @@ document.getElementById('wrongList').innerHTML='No mistakes yet';
 document.getElementById('wrongList').innerHTML=wrongWords.map((w,i)=>(i+1)+'. '+w).join('<br>');
 }
 }
-</script></body></html>
+</script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script>
+document.getElementById('fileInput').addEventListener('change',function(e){
+const file=e.target.files[0];
+if(!file)return;
+if(file.name.endsWith('.txt')){
+const r=new FileReader();
+r.onload=function(ev){words=ev.target.result.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);document.getElementById('loaded').innerText=words.length+' words loaded';};
+r.readAsText(file);
+}else{
+const r=new FileReader();
+r.onload=function(ev){
+const data=new Uint8Array(ev.target.result);
+const wb=XLSX.read(data,{type:'array'});
+const sh=wb.Sheets[wb.SheetNames[0]];
+const rows=XLSX.utils.sheet_to_json(sh,{header:1});
+words=rows.map(r=>r[0]).filter(Boolean);
+document.getElementById('loaded').innerText=words.length+' words loaded';
+};
+r.readAsArrayBuffer(file);
+}
+});
+</script>
+</body></html>
