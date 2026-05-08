@@ -1,1 +1,310 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spelling Bee Trainer</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:750px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+textarea{
+    width:100%;
+    height:260px;
+    font-size:18px;
+    padding:10px;
+}
+
+button{
+    padding:12px 20px;
+    margin:8px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.start{background:#007aff;color:white;}
+.correct{background:#34c759;color:white;}
+.wrong{background:#ff3b30;color:white;}
+.speak{background:#5856d6;color:white;}
+.next{background:#ff9500;color:white;}
+
+#wordBox{
+    font-size:60px;
+    font-weight:bold;
+    margin:25px;
+    padding:35px;
+    background:#eeeeee;
+    border-radius:20px;
+    letter-spacing:3px;
+    min-height:80px;
+}
+
+#timer{
+    font-size:40px;
+    color:#ff3b30;
+    margin:20px;
+}
+
+.score{
+    font-size:26px;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎤 Spelling Bee Training</h1>
+
+<p>يمكنك تعديل الكلمات أو إضافة كلمات جديدة:</p>
+
+<textarea id="words">After
+All
+Animal
+Baby
+Before
+Birthday
+Bring
+Clean
+Buy
+Again
+Always
+Around
+Because
+Better
+Black
+Brother
+Busy
+Carry
+Close
+Come
+Happy
+Funny
+Finish
+Could
+Dance
+Kind
+Drink
+Pretty
+Foggy
+Pull
+Long
+Little
+Mother
+Mistake
+Today
+Start
+Desk
+Nice
+Windy
+High
+Winner
+Score
+Player
+Fug
+France
+Basket
+Warm
+Cape
+Show
+Venom
+Ring
+Sleep
+Button
+Fork
+Answer
+Family
+Igloo
+Listen
+Harm
+Photo
+Evening
+Sale
+Super
+Fish
+Among
+Bend
+Blanket
+Walk
+Root
+Mirror
+Zebra
+Tail
+Purple
+Nest
+Duck
+Roll
+Rest
+Lemon
+Apricot
+Spring
+Orange
+Interesting
+Horror
+Remember
+Weather
+Women
+Favorite
+Underrate
+Yacht
+Together
+Yesterday
+Mile
+Picture
+Hungry
+Teacher
+Restroom
+Coffee
+Whiteboard
+Curtain
+Gorilla
+Telephone</textarea>
+
+<br><br>
+
+<label>مدة التايمر لكل كلمة:</label>
+<input type="number" id="timeInput" value="20">
+
+<br><br>
+
+<button class="start" onclick="startGame()">ابدأ التدريب</button>
+
+<div id="wordBox">اضغط ابدأ</div>
+
+<div id="timer">⏳ 0</div>
+
+<button class="speak" onclick="speakWord()">🔊 إعادة النطق</button>
+<button class="correct" onclick="markCorrect()">✅ صح</button>
+<button class="wrong" onclick="markWrong()">❌ خطأ</button>
+<button class="next" onclick="nextWord()">➡️ كلمة جديدة</button>
+
+<div class="score">
+✅ الصحيح: <span id="correctCount">0</span><br>
+❌ الخطأ: <span id="wrongCount">0</span>
+</div>
+
+</div>
+
+<script>
+
+let words = [];
+let currentWord = "";
+let timer;
+let timeLeft = 0;
+
+let correct = 0;
+let wrong = 0;
+
+function startGame(){
+
+    words = document.getElementById("words").value
+    .split("\n")
+    .map(w => w.trim())
+    .filter(w => w !== "");
+
+    correct = 0;
+    wrong = 0;
+
+    updateScore();
+
+    nextWord();
+}
+
+function nextWord(){
+
+    clearInterval(timer);
+
+    let randomIndex = Math.floor(Math.random() * words.length);
+
+    currentWord = words[randomIndex];
+
+    document.getElementById("wordBox").innerText = currentWord;
+
+    speakWord();
+
+    startTimer();
+}
+
+function speakWord(){
+
+    speechSynthesis.cancel();
+
+    let utterance = new SpeechSynthesisUtterance(currentWord);
+
+    utterance.lang = "en-US";
+
+    utterance.rate = 0.85;
+
+    speechSynthesis.speak(utterance);
+}
+
+function startTimer(){
+
+    timeLeft = parseInt(document.getElementById("timeInput").value);
+
+    document.getElementById("timer").innerText = "⏳ " + timeLeft;
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        document.getElementById("timer").innerText = "⏳ " + timeLeft;
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            alert("انتهى الوقت!\nالكلمة كانت: " + currentWord);
+        }
+
+    },1000);
+}
+
+function markCorrect(){
+
+    correct++;
+
+    updateScore();
+
+    nextWord();
+}
+
+function markWrong(){
+
+    wrong++;
+
+    updateScore();
+
+    nextWord();
+}
+
+function updateScore(){
+
+    document.getElementById("correctCount").innerText = correct;
+
+    document.getElementById("wrongCount").innerText = wrong;
+}
+
+</script>
+
+</body>
+</html>
