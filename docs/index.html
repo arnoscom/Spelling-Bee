@@ -1,88 +1,4789 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jad Spelling Bee</title>
-<style>
-body{font-family:Arial;background:#f4f4f4;text-align:center;padding:20px}
-.container{max-width:1000px;margin:auto;background:white;padding:20px;border-radius:20px}
-.wordTable{width:100%;border-collapse:collapse}
-.wordTable td{border:1px solid #ccc;padding:8px;font-size:20px}
-button{padding:12px 20px;margin:8px;font-size:18px}
-#wordBox{font-size:42px;font-weight:bold;background:linear-gradient(135deg,#4facfe,#00f2fe);color:white;padding:30px;border-radius:20px;margin:20px;line-height:1.4;overflow:visible;white-space:normal}
-#timer{font-size:40px;color:red}
-</style></head><body><div class="container">
-<h1>Jad Spelling Bee</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Al Jbour Spelling Bee - Free spelling practice for everyone" />
+  <title>🐝 Al Jbour Spelling Bee</title>
+  <style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bee-yellow: #FFD93D;
+  --bee-orange: #FF9500;
+  --bee-red: #FF3B30;
+  --bee-green: #34C759;
+  --bee-blue: #007AFF;
+  --bee-purple: #AF52DE;
+  --bee-pink: #FF2D55;
+  --bee-teal: #5AC8FA;
 
-<details><summary style="font-size:24px">📚 Show / Hide Words</summary><table class='wordTable'><tr><td>After</td><td>Drink</td><td>Button</td><td>Apricot</td></tr><tr><td>All</td><td>Pretty</td><td>Fork</td><td>Spring</td></tr><tr><td>Animal</td><td>Foggy</td><td>Answer</td><td>Orange</td></tr><tr><td>Baby</td><td>Pull</td><td>Family</td><td>Interesting</td></tr><tr><td>Before</td><td>Long</td><td>Igloo</td><td>Horror</td></tr><tr><td>Birthday</td><td>Little</td><td>Listen</td><td>Remember</td></tr><tr><td>Bring</td><td>Mother</td><td>Harm</td><td>Weather</td></tr><tr><td>Clean</td><td>Mistake</td><td>Photo</td><td>Women</td></tr><tr><td>Buy</td><td>Today</td><td>Evening</td><td>Favorite</td></tr><tr><td>Again</td><td>Start</td><td>Sale</td><td>Underrate</td></tr><tr><td>Always</td><td>Desk</td><td>Super</td><td>Yacht</td></tr><tr><td>Around</td><td>Nice</td><td>Fish</td><td>Together</td></tr><tr><td>Because</td><td>Windy</td><td>Among</td><td>Yesterday</td></tr><tr><td>Better</td><td>High</td><td>Bend</td><td>Mile</td></tr><tr><td>Black</td><td>Winner</td><td>Blanket</td><td>Picture</td></tr><tr><td>Brother</td><td>Score</td><td>Walk</td><td>Hungry</td></tr><tr><td>Busy</td><td>Player</td><td>Root</td><td>Teacher</td></tr><tr><td>Carry</td><td>Fug</td><td>Mirror</td><td>Restroom</td></tr><tr><td>Close</td><td>France</td><td>Zebra</td><td>Coffee</td></tr><tr><td>Come</td><td>Basket</td><td>Tail</td><td>Whiteboard</td></tr><tr><td>Happy</td><td>Warm</td><td>Purple</td><td>Curtain</td></tr><tr><td>Funny</td><td>Cape</td><td>Nest</td><td>Gorilla</td></tr><tr><td>Finish</td><td>Show</td><td>Duck</td><td>Telephone</td></tr><tr><td>Could</td><td>Venom</td><td>Roll</td><td></td></tr><tr><td>Dance</td><td>Ring</td><td>Rest</td><td></td></tr><tr><td>Kind</td><td>Sleep</td><td>Lemon</td><td></td></tr></table></details>
-<br><label>Timer:</label><select id="timeInput"><option value="3" >3</option><option value="4" >4</option><option value="5" >5</option><option value="6" >6</option><option value="7" >7</option><option value="8" >8</option><option value="9" >9</option><option value="10" selected>10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option></select><br><br>
-<button onclick="startGame()">Start</button>
-<div id="wordBox">Press Start</div>
-<div id="timer">⏳ 0</div>
-<button onclick="speakWord()">🔊 Repeat</button>
-<button id="pauseBtn" onclick="togglePause()">⏸ Pause</button>
-<button onclick="markCorrect()">✅ Correct</button>
-<button onclick="markWrong()">❌ Wrong</button>
-<button onclick="skipWord()">🔁 Skip</button>
-<div style="font-size:24px">Correct: <span id="correctCount">0</span><br>Wrong: <span id="wrongCount">0</span><br>Remaining: <span id="remainingCount">0</span></div>
-<div style="margin-top:20px;text-align:left"><h2>Wrong Words</h2><div id="wrongList">No mistakes yet</div></div>
-</div>
-<script>
-let words=['After', 'All', 'Animal', 'Baby', 'Before', 'Birthday', 'Bring', 'Clean', 'Buy', 'Again', 'Always', 'Around', 'Because', 'Better', 'Black', 'Brother', 'Busy', 'Carry', 'Close', 'Come', 'Happy', 'Funny', 'Finish', 'Could', 'Dance', 'Kind', 'Drink', 'Pretty', 'Foggy', 'Pull', 'Long', 'Little', 'Mother', 'Mistake', 'Today', 'Start', 'Desk', 'Nice', 'Windy', 'High', 'Winner', 'Score', 'Player', 'Fug', 'France', 'Basket', 'Warm', 'Cape', 'Show', 'Venom', 'Ring', 'Sleep', 'Button', 'Fork', 'Answer', 'Family', 'Igloo', 'Listen', 'Harm', 'Photo', 'Evening', 'Sale', 'Super', 'Fish', 'Among', 'Bend', 'Blanket', 'Walk', 'Root', 'Mirror', 'Zebra', 'Tail', 'Purple', 'Nest', 'Duck', 'Roll', 'Rest', 'Lemon', 'Apricot', 'Spring', 'Orange', 'Interesting', 'Horror', 'Remember', 'Weather', 'Women', 'Favorite', 'Underrate', 'Yacht', 'Together', 'Yesterday', 'Mile', 'Picture', 'Hungry', 'Teacher', 'Restroom', 'Coffee', 'Whiteboard', 'Curtain', 'Gorilla', 'Telephone'];
-let remainingWords=[];
-let currentWord="";
-let timer;
-let timeLeft=0;
-let correct=0;
-let wrong=0;
-let wrongWords=[];
-let paused=false;
+  --bg-primary: #F9F5FF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F0EAFF;
+  --text-primary: #1C1C3A;
+  --text-secondary: #6B6B8A;
+  --text-muted: #A0A0C0;
+  --border-color: #E8E0FF;
 
-function startGame(){
-if(words.length===0){alert('No words loaded');return;}
-remainingWords=[...words];
-correct=0;wrong=0;wrongWords=[];
-updateScore();updateWrongList();
-nextWord();
-}
+  --shadow-sm: 0 2px 8px rgba(100, 60, 200, 0.08);
+  --shadow-md: 0 4px 20px rgba(100, 60, 200, 0.12);
+  --shadow-lg: 0 8px 32px rgba(100, 60, 200, 0.18);
+  --shadow-card: 0 4px 16px rgba(100, 60, 200, 0.10);
 
-function nextWord(){
-clearInterval(timer);
-if(remainingWords.length===0){
-document.getElementById('wordBox').innerText='🎉 Finished';
-return;
-}
-let i=Math.floor(Math.random()*remainingWords.length);
-currentWord=remainingWords[i];
-remainingWords.splice(i,1);
-document.getElementById('wordBox').innerText=currentWord;
-speakWord();
-timeLeft=parseInt(document.getElementById('timeInput').value)||10;
-document.getElementById('timer').innerText='⏳ '+timeLeft;
-timer=setInterval(function(){
-if(paused) return;
-timeLeft--;
-document.getElementById('timer').innerText='⏳ '+timeLeft;
-if(timeLeft<=0){
-clearInterval(timer);
-wrong++;
-wrongWords.push(currentWord);
-updateScore();
-updateWrongList();
-nextWord();
-}
-},1000);
-updateScore();
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  --font-display: -apple-system, 'SF Pro Rounded', 'Helvetica Neue', system-ui, sans-serif;
+  --font-body: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
-function skipWord(){remainingWords.push(currentWord);nextWord();}
-function speakWord(){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(currentWord);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u);}
-function togglePause(){paused=!paused;document.getElementById('pauseBtn').innerText=paused?'▶ Continue':'⏸ Pause';}
-function markCorrect(){clearInterval(timer);correct++;updateScore();nextWord();}
-function markWrong(){clearInterval(timer);wrong++;wrongWords.push(currentWord);updateScore();updateWrongList();nextWord();}
-function updateScore(){document.getElementById('correctCount').innerText=correct;document.getElementById('wrongCount').innerText=wrong;document.getElementById('remainingCount').innerText=remainingWords.length;}
-function updateWrongList(){
-if(wrongWords.length===0){
-document.getElementById('wrongList').innerHTML='No mistakes yet';
-}else{
-document.getElementById('wrongList').innerHTML=wrongWords.map((w,i)=>(i+1)+'. '+w).join('<br>');
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg-primary: #0D0D1A;
+  --bg-card: #1A1A2E;
+  --bg-card-hover: #222240;
+  --text-primary: #F0EAFF;
+  --text-secondary: #A090C0;
+  --text-muted: #6060A0;
+  --border-color: #2A2A50;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
-</script></body></html>
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===== SCREEN CONTAINER ===== */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  padding-top: calc(var(--safe-top) + 16px);
+  padding-bottom: calc(var(--safe-bottom) + 16px);
+  padding-left: calc(var(--safe-left) + 16px);
+  padding-right: calc(var(--safe-right) + 16px);
+  animation: screenIn 0.3s ease;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== SPLASH SCREEN ===== */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #667eea 0%, #764ba2 50%, #f64f59 100%);
+  padding: 40px 20px;
+  gap: 0;
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+.splash-bee {
+  font-size: 96px;
+  animation: beeBounce 1.2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
+  margin-bottom: 16px;
+}
+
+@keyframes beeBounce {
+  from { transform: translateY(0) rotate(-5deg) scale(1); }
+  to { transform: translateY(-16px) rotate(5deg) scale(1.05); }
+}
+
+.splash-title {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  letter-spacing: -1px;
+  text-align: center;
+}
+
+.splash-subtitle {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  margin-top: 6px;
+  letter-spacing: 0.3px;
+}
+
+.splash-greeting {
+  font-size: 28px;
+  margin-top: 24px;
+  animation: fadeIn 1s ease 0.5s both;
+}
+
+.splash-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.splash-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.splash-dot:nth-child(2) { animation-delay: 0.2s; }
+.splash-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HOME SCREEN ===== */
+.home-screen {
+  background: linear-gradient(180deg, #f0e6ff 0%, #e8f4ff 100%);
+  min-height: 100%;
+}
+
+[data-theme="dark"] .home-screen {
+  background: linear-gradient(180deg, #0D0D1A 0%, #0a0a20 100%);
+}
+
+.home-header {
+  text-align: center;
+  padding: 12px 0 20px;
+}
+
+.home-bee {
+  font-size: 56px;
+  display: block;
+  animation: beeBounce 2s ease-in-out infinite alternate;
+}
+
+.home-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.home-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.home-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+    padding:4px 0;
+    width:100%;
+}
+
+@media (min-width:768px){
+
+.home-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+}
+.home-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 130px;
+  justify-content: center;
+}
+
+.home-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  opacity: 0.08;
+}
+
+.home-card:nth-child(1)::before { background: var(--bee-orange); }
+.home-card:nth-child(2)::before { background: var(--bee-blue); }
+.home-card:nth-child(3)::before { background: var(--bee-green); }
+.home-card:nth-child(4)::before { background: var(--bee-purple); }
+
+.home-card:active {
+  transform: scale(0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-card-icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.home-card-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.home-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ===== SCREEN HEADER ===== */
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.screen-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.back-btn:active { transform: scale(0.92); }
+
+/* ===== LIST CARDS ===== */
+.list-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 12px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.list-card.selected {
+  border-color: var(--bee-purple);
+}
+
+.list-card:active { transform: scale(0.98); }
+
+.list-card-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+.list-card-info {
+  flex: 1;
+}
+
+.list-card-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.list-card-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.list-card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  transition: transform 0.15s ease, opacity 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn:active { transform: scale(0.95); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 14px 24px;
+  font-size: 16px;
+  box-shadow: 0 4px 16px rgba(118, 75, 162, 0.35);
+  border-radius: var(--radius-lg);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: white;
+  padding: 14px 20px;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(17, 153, 142, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #f64f59, #c0392b);
+  color: white;
+  padding: 14px 20px;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(246, 79, 89, 0.3);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  color: #1C1C3A;
+  padding: 14px 20px;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(247, 151, 30, 0.3);
+}
+
+.btn-ghost {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 12px 18px;
+  font-size: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border-color);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 18px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border-color);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ===== SETUP SCREEN ===== */
+.setup-section {
+  margin-bottom: 24px;
+}
+
+.setup-label {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-cards {
+  display: flex;
+  gap: 12px;
+}
+
+.option-card {
+  flex: 1;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.option-card.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(118,75,162,0.08), rgba(102,126,234,0.08));
+  box-shadow: 0 4px 16px rgba(118, 75, 162, 0.2);
+}
+
+.option-card:active { transform: scale(0.97); }
+
+.option-card-icon { font-size: 36px; }
+
+.option-card-label {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.option-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Timer Slider */
+.timer-slider-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.timer-value-display {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--bee-purple);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.timer-value-display.off {
+  color: var(--text-muted);
+}
+
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--bee-purple) 0%, var(--bee-purple) var(--slider-pct, 50%), var(--border-color) var(--slider-pct, 50%), var(--border-color) 100%);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 2px 12px rgba(118, 75, 162, 0.4);
+  cursor: pointer;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* ===== PRACTICE SCREEN ===== */
+.practice-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.word-counter {
+  display: none !important;
+}
+
+.word-num-side { display: none !important; }
+
+.word-num-center { display: none !important; }
+
+/* Progress Bar */
+.progress-bar-wrap {
+  height: 28px;
+  background: var(--border-color);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 14px;
+  transition: width 0.4s ease;
+}
+
+/* Timer Circle */
+.timer-circle-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+
+.timer-track {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 8;
+}
+
+.timer-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.95s linear, stroke 0.3s ease;
+}
+
+.timer-fill.green { stroke: var(--bee-green); }
+.timer-fill.orange { stroke: var(--bee-orange); }
+.timer-fill.red { stroke: var(--bee-red); }
+
+/* Word Display */
+.word-display {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-text {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--bee-purple);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.word-input {
+  width: 100%;
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.word-input:focus { border-color: var(--bee-purple); }
+.word-input::placeholder { color: var(--text-muted); font-size: 16px; font-weight: 600; }
+
+/* Practice Buttons */
+.practice-btns-row {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.practice-btns-row-1 {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.practice-btns-row-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.practice-btns-row-3 {
+  grid-template-columns: 1fr;
+}
+
+.practice-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.practice-btn:active { transform: scale(0.94); }
+
+.practice-btn-icon { font-size: 22px; }
+
+.practice-btn-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+.practice-btn.correct {
+  background: linear-gradient(135deg, rgba(52,199,89,0.15), rgba(52,199,89,0.05));
+  border-color: var(--bee-green);
+}
+
+.practice-btn.wrong {
+  background: linear-gradient(135deg, rgba(255,59,48,0.15), rgba(255,59,48,0.05));
+  border-color: var(--bee-red);
+}
+
+.practice-btn.exit {
+  background: linear-gradient(135deg, rgba(255,149,0,0.15), rgba(255,149,0,0.05));
+  border-color: var(--bee-orange);
+  grid-column: 1 / -1;
+}
+
+/* ===== RESULTS SCREEN ===== */
+.results-hero {
+  text-align: center;
+  padding: 24px 0 16px;
+}
+
+.results-score {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.results-label {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.stars-row {
+  font-size: 40px;
+  letter-spacing: 4px;
+  margin: 12px 0;
+}
+
+.results-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 14px;
+}
+
+.results-card-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+}
+
+.wrong-word-pill {
+  display: inline-flex;
+  background: rgba(255, 59, 48, 0.1);
+  border: 2px solid rgba(255, 59, 48, 0.3);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--bee-red);
+  margin: 4px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.results-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== HISTORY SCREEN ===== */
+.history-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.history-stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.history-stat-val {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--bee-purple);
+}
+
+.history-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.history-record {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.history-record-score {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--bee-purple);
+  min-width: 48px;
+}
+
+.history-record-info {
+  flex: 1;
+}
+
+.history-record-list {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.history-record-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.history-record-badge {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  color: #1C1C3A;
+  border-radius: 100px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* ===== SETTINGS SCREEN ===== */
+.settings-section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 18px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  padding: 16px 18px;
+  gap: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-row:last-child { border-bottom: none; }
+
+.settings-row-icon { font-size: 24px; }
+
+.settings-row-info { flex: 1; }
+
+.settings-row-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.settings-row-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Toggle */
+.toggle {
+  position: relative;
+  width: 52px;
+  height: 30px;
+}
+
+.toggle input { display: none; }
+
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  background: var(--border-color);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle input:checked + .toggle-track { background: var(--bee-purple); }
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.toggle input:checked + .toggle-track::after { transform: translateX(22px); }
+
+/* ===== LIST MANAGEMENT ===== */
+.list-mgmt-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.word-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 100px;
+  padding: 6px 12px 6px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 4px;
+  font-family: var(--font-display);
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+.word-pill-del {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--bee-red);
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.words-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  min-height: 80px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  width: 100%;
+  max-width: 500px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-input {
+  width: 100%;
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus { border-color: var(--bee-purple); }
+
+.modal-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btns .btn { flex: 1; }
+
+/* ===== SECTION HEADING ===== */
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon { font-size: 56px; margin-bottom: 12px; }
+
+.empty-state-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.empty-state-sub {
+  font-size: 14px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: calc(24px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 200;
+  white-space: nowrap;
+  animation: toastIn 0.25s ease, toastOut 0.25s ease 2s forwards;
+  pointer-events: none;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ===== UTIL ===== */
+.divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 16px 0;
+}
+
+.text-center { text-align: center; }
+
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+/* Paused overlay */
+.paused-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.paused-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 32px 40px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.paused-icon { font-size: 56px; }
+.paused-text {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+
+/* ===== VOICE CARDS (settings) ===== */
+.voice-card {
+  background: var(--bg-card);
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.voice-card.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(118,75,162,0.1), rgba(102,126,234,0.08));
+  box-shadow: 0 4px 16px rgba(118,75,162,0.2);
+}
+
+.voice-card:active { transform: scale(0.96); }
+
+.voice-card-emoji { font-size: 30px; }
+
+.voice-card-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.voice-card-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ===== VOICE CHIPS (setup screen) ===== */
+.voice-chip {
+  background: var(--bg-card);
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 80px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.voice-chip.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(118,75,162,0.1), rgba(102,126,234,0.08));
+  box-shadow: 0 4px 14px rgba(118,75,162,0.2);
+}
+
+.voice-chip:active { transform: scale(0.94); }
+
+/* ===== ENHANCED WORD PILLS (list management readability) ===== */
+.word-pill {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--bee-purple) !important;
+  padding: 8px 14px 8px 16px !important;
+  letter-spacing: 1px !important;
+}
+
+.words-container {
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--border-color);
+}
+
+/* ===== VOICE GENDER BUTTON (setup screen) ===== */
+.voice-gender-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 10px;
+  background: var(--bg-card);
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.voice-gender-btn.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(118,75,162,0.12), rgba(102,126,234,0.08));
+  box-shadow: 0 4px 14px rgba(118,75,162,0.22);
+}
+
+.voice-gender-btn:active { transform: scale(0.96); }
+
+/* ===== PROGRESS BAR (in progress row with inline nums) ===== */
+/* progress bar override removed — handled above */
+
+/* ===== IMPROVED FONT READABILITY ===== */
+.word-text {
+  font-size: 52px !important;
+  font-weight: 900 !important;
+  letter-spacing: 5px !important;
+  color: var(--text-primary) !important;
+}
+
+.screen-title {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+}
+
+.settings-row-label {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+}
+
+.settings-row-desc {
+  font-size: 13px !important;
+  color: var(--text-secondary) !important;
+}
+
+.section-heading {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+}
+
+/* ===== DARK MODE: improve word pill contrast ===== */
+[data-theme="dark"] .word-pill {
+  background: var(--bg-card) !important;
+  border-color: var(--bee-purple) !important;
+  color: #F0EAFF !important;
+}
+
+[data-theme="dark"] .words-container {
+  background: var(--bg-card) !important;
+}
+
+/* ===== SETTINGS CHOICE BUTTON (Man/Woman, Country) ===== */
+.settings-choice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  background: var(--bg-primary);
+  border: 2.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.settings-choice-btn.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(175,82,222,0.10), rgba(102,126,234,0.07));
+  box-shadow: 0 4px 14px rgba(175,82,222,0.20);
+}
+
+.settings-choice-btn:active { transform: scale(0.96); }
+
+/* ===== SETUP VOICE BUTTON (Man / Woman on setup screen) ===== */
+.setup-voice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  background: var(--bg-card);
+  border: 2.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-display);
+}
+
+.setup-voice-btn.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(175,82,222,0.10), rgba(102,126,234,0.07));
+  box-shadow: 0 4px 14px rgba(175,82,222,0.20);
+}
+
+.setup-voice-btn:active { transform: scale(0.96); }
+
+/* ===== SETTINGS CHOICE BUTTON (Accent on settings screen) ===== */
+.settings-choice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  background: var(--bg-primary);
+  border: 2.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-display);
+}
+
+.settings-choice-btn.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(175,82,222,0.10), rgba(102,126,234,0.07));
+  box-shadow: 0 4px 14px rgba(175,82,222,0.20);
+}
+
+.settings-choice-btn:active { transform: scale(0.96); }
+
+/* ===== WORD PILLS — list management readability fix ===== */
+.word-pill {
+  font-family: var(--font-body) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  background: var(--bg-card) !important;
+  border: 2px solid var(--bee-purple) !important;
+  padding: 8px 12px 8px 14px !important;
+  letter-spacing: 0.3px !important;
+  text-transform: capitalize !important;
+}
+
+.words-container {
+  background: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .word-pill {
+  color: #F0EAFF !important;
+  background: var(--bg-card) !important;
+}
+
+/* ===== LIST INPUT readability ===== */
+.modal-input {
+  font-family: var(--font-body) !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== SECTION HEADING — more readable ===== */
+.section-heading {
+  font-family: var(--font-body) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  color: var(--text-muted) !important;
+}
+
+/* ===== SETTINGS ROWS — clearer text ===== */
+.settings-row-label {
+  font-family: var(--font-display) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.settings-row-desc {
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+}
+
+/* ===== SCREEN TITLE ===== */
+.screen-title {
+  font-family: var(--font-display) !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+/* ===== COACH WORD DISPLAY ===== */
+.word-text {
+  font-family: var(--font-display), sans-serif !important;
+  font-size: 54px !important;
+  font-weight: 800 !important;
+  letter-spacing: 6px !important;
+  color: var(--bee-purple) !important;
+  text-transform: capitalize !important;
+  line-height: 1.1 !important;
+}
+
+/* ════════════════════════════════════════════
+   SETTINGS — clean card system
+   ════════════════════════════════════════════ */
+.scard-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  padding: 0 4px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.scard {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.srow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 16px;
+}
+
+.srow-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.srow-icon {
+  font-size: 22px;
+  width: 36px;
+  text-align: center;
+}
+
+.srow-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.srow-sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.srow-badge {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+.scard-big-val {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--bee-purple);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+/* Accent/country choice grid */
+.schoice-grid {
+  display: flex;
+  gap: 10px;
+}
+
+.schoice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 6px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  color: var(--text-primary);
+}
+
+.schoice-btn.selected {
+  border-color: var(--bee-purple);
+  background: linear-gradient(135deg, rgba(175,82,222,0.10), rgba(102,126,234,0.06));
+  box-shadow: 0 3px 12px rgba(175,82,222,0.18);
+}
+
+.schoice-btn:active { transform: scale(0.95); }
+
+.schoice-flag { font-size: 26px; }
+
+.schoice-text {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ════════════════════════════════════════════
+   TEST SCREEN — full redesign
+   ════════════════════════════════════════════ */
+.test-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: calc(var(--safe-top) + 10px) !important;
+  padding-bottom: calc(var(--safe-bottom) + 10px);
+}
+
+/* Top bar */
+.test-top-bar {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.test-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.test-total-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 44px;
+  text-align: right;
+}
+
+.test-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.test-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 15px;
+}
+
+.test-badge-correct {
+  background: rgba(52,199,89,0.12);
+  border: 1.5px solid rgba(52,199,89,0.35);
+}
+
+.test-badge-wrong {
+  background: rgba(255,59,48,0.10);
+  border: 1.5px solid rgba(255,59,48,0.28);
+}
+
+.test-badge-num {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.test-badge-correct .test-badge-num { color: #1d8a3a; }
+.test-badge-wrong   .test-badge-num { color: #c0392b; }
+
+.test-stopwatch {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* Word card */
+.test-word-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px 14px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 90px;
+  justify-content: center;
+}
+
+.test-word-text {
+  font-family: var(--font-display);
+  font-size: 54px;
+  font-weight: 800;
+  color: var(--bee-purple);
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  line-height: 1.15;
+  width: 100%;
+  white-space: nowrap;
+  overflow: visible;
+  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.test-word-input {
+  width: 100%;
+  border: 2.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s, font-size 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.test-word-input:focus { border-color: var(--bee-purple); }
+.test-word-input::placeholder { color: var(--text-muted); font-size: 15px; font-weight: 500; }
+
+.test-feedback {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  min-height: 26px;
+  text-align: center;
+}
+
+.test-feedback.correct { color: var(--bee-green); }
+.test-feedback.wrong   { color: var(--bee-red); }
+
+/* Action buttons */
+.test-btn-row {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+}
+
+.test-action-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 11px 6px 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.13s, box-shadow 0.13s;
+}
+
+.test-action-btn:active { transform: scale(0.93); }
+
+.test-action-icon { font-size: 20px; }
+
+.test-action-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.test-btn-correct {
+  background: linear-gradient(135deg, rgba(52,199,89,0.14), rgba(52,199,89,0.04));
+  border-color: var(--bee-green);
+  padding: 15px 6px 12px;
+}
+
+.test-btn-correct .test-action-icon { font-size: 26px; }
+.test-btn-correct .test-action-label { font-size: 12px; color: #1d8a3a; font-weight: 800; }
+
+.test-btn-wrong {
+  background: linear-gradient(135deg, rgba(255,59,48,0.14), rgba(255,59,48,0.04));
+  border-color: var(--bee-red);
+  padding: 15px 6px 12px;
+}
+
+.test-btn-wrong .test-action-icon { font-size: 26px; }
+.test-btn-wrong .test-action-label { font-size: 12px; color: #c0392b; font-weight: 800; }
+
+/* Exit button — subtle text link at bottom */
+.test-exit-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 13px 16px;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.15s, color 0.15s;
+}
+
+.test-exit-btn:active {
+  background: rgba(255,59,48,0.08);
+  border-color: var(--bee-red);
+  color: var(--bee-red);
+}
+
+/* ── progress bar wrapper & centred label ── */
+.test-progress-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.test-progress-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  mix-blend-mode: normal;
+  z-index: 2;
+}
+
+
+/* ── progress percentage label — sits above the bar fill ── */
+#progress-pct {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.7);
+  z-index: 10;
+  line-height: 1;
+  /* The parent has position:relative and overflow:visible so this shows */
+}
+
+/* Progress bar % label — overlaid via wrapper */
+.test-progress-inner {
+  position: relative;
+  flex: 1;
+}
+
+.test-progress-inner .progress-bar-wrap {
+  margin-bottom: 0;
+}
+
+.test-pct-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 900;
+  color: #fff;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  z-index: 5;
+}
+
+/* ═══════════════════════════════════════════
+   IPAD SETTINGS FIX — prevent text clipping
+   ═══════════════════════════════════════════ */
+
+/* srow must never clip — allow full height */
+.srow {
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  padding: 14px 16px;
+}
+
+/* left section grows, text wraps naturally */
+.srow-left {
+  flex: 1;
+  min-width: 0;
+  align-items: flex-start;
+}
+
+/* text always wraps — never clips */
+.srow-title { white-space: normal; }
+.srow-sub   { white-space: normal; }
+
+/* toggle stays right-aligned and doesn't shrink */
+.toggle { flex-shrink: 0; margin-top: 2px; }
+
+/* Accent buttons always have enough room */
+.schoice-grid { flex-wrap: wrap; }
+.schoice-btn  { min-width: 80px; min-height: 70px; }
+
+/* Settings cards must NOT clip content */
+.scard { overflow: visible; }
+
+/* Option cards on setup also wrap */
+.option-cards { flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════════
+   SELF-TEST — compact layout for keyboard mode
+   All UI must fit in the top ~50% of screen
+   ═══════════════════════════════════════════ */
+
+/* test-screen scrolls — keyboard pushes content up */
+.test-screen {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Top bar: fixed compact height */
+.test-top-bar {
+  padding: 10px 12px 8px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.test-badge {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.test-badge-num { font-size: 16px; }
+.test-stopwatch { font-size: 12px; }
+
+/* Word card: compact in self mode so keyboard + buttons all fit */
+.test-word-card {
+  padding: 12px 16px 10px;
+  min-height: 0;
+  gap: 8px;
+  flex-shrink: 1;
+}
+
+/* Input field: visible but compact */
+.test-word-input {
+  padding: 12px 14px;
+  font-size: 22px;
+}
+
+/* Feedback: tight */
+.test-feedback {
+  min-height: 20px;
+  font-size: 14px;
+}
+
+/* Button rows stay visible */
+.test-btn-row {
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+/* Action buttons: comfortable tap targets, not oversized */
+.test-action-btn {
+  padding: 12px 8px 10px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.test-action-icon  { font-size: 20px; }
+.test-action-label { font-size: 10px; }
+
+/* Correct/Wrong buttons */
+.test-btn-correct { padding: 14px 8px 11px; }
+.test-btn-wrong   { padding: 14px 8px 11px; }
+.test-btn-correct .test-action-icon,
+.test-btn-wrong   .test-action-icon { font-size: 24px; }
+.test-btn-correct .test-action-label,
+.test-btn-wrong   .test-action-label { font-size: 12px; }
+
+/* Exit button: slim */
+.test-exit-btn {
+  padding: 12px 16px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Coach word: allow font shrink via JS, base size ok */
+.test-word-text {
+  font-size: 48px;
+  letter-spacing: 4px;
+}
+
+html{-webkit-text-size-adjust:100%;}
+*{max-width:100%;box-sizing:border-box;}
+.screen{padding-bottom:calc(30px + env(safe-area-inset-bottom));}
+
+@media (min-width:768px){
+html, body, #app{
+width:100vw;
+min-width:100vw;
+}
+
+.screen{
+width:100vw !important;
+max-width:none !important;
+margin:0 !important;
+box-sizing:border-box;
+padding-top:calc(var(--safe-top) + 16px);
+padding-left:24px;
+padding-right:24px;
+padding-bottom:calc(var(--safe-bottom) + 16px);
+}
+
+.home-screen,.settings-screen,.practice-screen,.test-screen{
+width:100% !important;
+}
+
+.home-header{width:100%;}
+
+.home-grid{
+width:100% !important;
+display:grid !important;
+grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+gap:18px !important;
+}
+
+.home-card{width:100% !important;}
+.settings-container{width:100% !important;}
+.srow{flex-wrap:wrap;}
+
+
+/* Every page fills available width */
+.home-screen,
+.test-screen,
+.practice-screen,
+.settings-screen{
+  width:100%;
+  min-width:100%;
+}
+
+/* Keep settings content responsive */
+.settings-container{
+  display:block;
+  width:100%;
+}
+
+button{
+  white-space:normal;
+}
+
+.btn{
+  min-height:48px;
+  height:auto;
+}
+
+/* Prevent Apple clipping issue */
+.srow{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.srow-left{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  flex:1;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+
+.srow-title,
+.srow-sub{
+  white-space:normal;
+  word-break:break-word;
+}
+
+}
+
+/* ═══════════════════════════════════════════
+   IPAD FULL-WIDTH FIX
+   Prevents phone-column layout on iPad
+   ═══════════════════════════════════════════ */
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+}
+
+/* On iPad (768px+), content fills the full width */
+@media (min-width: 768px) {
+  html, body, #app {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .screen {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  /* Home grid: 4 columns on iPad */
+  .home-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 20px !important;
+  }
+
+  /* Larger cards on iPad */
+  .home-card {
+    min-height: 160px;
+    padding: 32px 20px;
+  }
+
+  .home-card-icon { font-size: 52px; }
+  .home-card-label { font-size: 18px; }
+  .home-card-desc  { font-size: 13px; }
+}
+
+/* ── Web version additions ── */
+html, body {
+  background: #ede8f5;
+}
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  min-height: 100vh;
+  box-shadow: 0 0 40px rgba(100,60,180,0.12);
+}
+@media (max-width: 500px) {
+  #app { max-width: 100%; box-shadow: none; }
+}
+.splash-screen {
+  position: fixed !important;
+  top: 0 !important; left: 50% !important;
+  transform: translateX(-50%);
+  width: 100% !important;
+  max-width: 480px !important;
+  height: 100vh !important;
+  z-index: 999 !important;
+}
+@media (max-width: 500px) {
+  .splash-screen { left: 0 !important; transform: none !important; max-width: 100% !important; }
+}
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+
+// ── state.js ──
+// Global application state
+const state = {
+  currentScreen: 'splash',
+  currentList: null,
+  practiceMode: 'coach',    // 'coach' | 'self'
+  timerDuration: 10,        // seconds, 0 = off
+  practiceWords: [],
+  currentWordIndex: 0,
+  correctWords: [],
+  wrongWords: [],
+  sessionScore: 0,
+  isPaused: false,
+  retryWords: null,         // words to retry (wrong words from last session)
+  theme: 'light',
+  defaultTimer: 10,
+};
+
+function getState() {
+  return state;
+}
+
+function setState(updates) {
+  Object.assign(state, updates);
+}
+
+function resetSession() {
+  state.practiceWords = [];
+  state.currentWordIndex = 0;
+  state.correctWords = [];
+  state.wrongWords = [];
+  state.sessionScore = 0;
+  state.isPaused = false;
+}
+
+
+// ── storage.js ──
+// IndexedDB storage layer — iOS Safari safe
+
+const DB_NAME = 'AlJbourSpellingBee';
+const DB_VERSION = 1;
+
+let dbPromise = null;
+
+function openDB() {
+  if (dbPromise) return dbPromise;
+
+  dbPromise = new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('lists')) {
+        db.createObjectStore('lists', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('history')) {
+        db.createObjectStore('history', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!db.objectStoreNames.contains('settings')) {
+        db.createObjectStore('settings', { keyPath: 'key' });
+      }
+      if (!db.objectStoreNames.contains('records')) {
+        db.createObjectStore('records', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+    request.onblocked = () => reject(new Error('IndexedDB blocked'));
+  });
+
+  return dbPromise;
+}
+
+function promisifyRequest(request) {
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Each operation gets a fresh transaction — iOS Safari closes transactions quickly
+async function withStore(storeName, mode, fn) {
+  const db = await openDB();
+  const tx = db.transaction(storeName, mode);
+  const store = tx.objectStore(storeName);
+  return fn(store, tx);
+}
+
+// ---- LISTS ----
+async function getLists() {
+  return withStore('lists', 'readonly', (store) =>
+    promisifyRequest(store.getAll())
+  );
+}
+
+async function getList(id) {
+  return withStore('lists', 'readonly', (store) =>
+    promisifyRequest(store.get(id))
+  );
+}
+
+async function saveList(list) {
+  return withStore('lists', 'readwrite', (store) =>
+    promisifyRequest(store.put(list))
+  );
+}
+
+async function deleteList(id) {
+  return withStore('lists', 'readwrite', (store) =>
+    promisifyRequest(store.delete(id))
+  );
+}
+
+// ---- HISTORY ----
+async function getHistory() {
+  return withStore('history', 'readonly', (store) =>
+    promisifyRequest(store.getAll())
+  );
+}
+
+async function addHistory(entry) {
+  await withStore('history', 'readwrite', (store) =>
+    promisifyRequest(store.add(entry))
+  );
+
+  const all = await withStore('history', 'readonly', (store) =>
+    promisifyRequest(store.getAll())
+  );
+
+  if (all.length > 100) {
+    const sorted = [...all].sort((a, b) => (a.id || 0) - (b.id || 0));
+    const toDelete = sorted.slice(0, all.length - 100);
+    for (const item of toDelete) {
+      await withStore('history', 'readwrite', (store) =>
+        promisifyRequest(store.delete(item.id))
+      );
+    }
+  }
+}
+
+async function clearHistory() {
+  return withStore('history', 'readwrite', (store) =>
+    promisifyRequest(store.clear())
+  );
+}
+
+// ---- SETTINGS ----
+async function getSetting(key) {
+  try {
+    const result = await withStore('settings', 'readonly', (store) =>
+      promisifyRequest(store.get(key))
+    );
+    return result ? result.value : null;
+  } catch (e) {
+    console.warn('getSetting failed for key:', key, e);
+    return null;
+  }
+}
+
+async function setSetting(key, value) {
+  return withStore('settings', 'readwrite', (store) =>
+    promisifyRequest(store.put({ key, value }))
+  );
+}
+
+// ---- RECORDS (top 10) ----
+async function getRecords() {
+  return withStore('records', 'readonly', (store) =>
+    promisifyRequest(store.getAll())
+  );
+}
+
+async function addRecord(record) {
+  await withStore('records', 'readwrite', (store) =>
+    promisifyRequest(store.add(record))
+  );
+
+  const all = await withStore('records', 'readonly', (store) =>
+    promisifyRequest(store.getAll())
+  );
+
+  if (all.length > 10) {
+    const sortedByAccuracy = [...all].sort(
+      (a, b) => (b.score / b.total) - (a.score / a.total)
+    );
+    const toRemove = sortedByAccuracy.slice(10);
+    for (const item of toRemove) {
+      await withStore('records', 'readwrite', (store) =>
+        promisifyRequest(store.delete(item.id))
+      );
+    }
+  }
+}
+
+
+// ── speech.js ──
+// ─────────────────────────────────────────────────────────────────────
+// speech.js — Forces specific named iOS voices.
+//
+// iOS ships with these English voices pre-installed on iPad:
+//   Samantha  (en-US, female) — always present
+//   Daniel    (en-GB, male)   — pre-installed on most iPads
+//
+// Additional voices can be downloaded ONCE in:
+//   Settings → Accessibility → Spoken Content → Voices → English
+// After download they work fully offline forever.
+//
+// This module picks voices by EXACT NAME so we always get the right
+// gender. If the preferred voice isn't installed yet, it shows the
+// user a one-time prompt with instructions to install it.
+// ─────────────────────────────────────────────────────────────────────
+
+const synth = window.speechSynthesis;
+let cachedVoice     = null;
+let cachedProfileId = null;
+let allVoices       = [];
+
+// Priority lists: first name found on device wins.
+// These are real iOS/iPadOS voice names in priority order.
+const VOICE_PRIORITY = {
+  'en-US-male':   ['Alex', 'Fred', 'Tom', 'Daniel'],                    // Alex = US male, pre-installed
+  'en-US-female': ['Samantha', 'Ava', 'Allison', 'Susan', 'Victoria'],  // Samantha = always there
+  'en-GB-male':   ['Daniel', 'Arthur', 'Oliver', 'Harry'],              // Daniel = GB male, common on iPad
+  'en-GB-female': ['Kate', 'Serena', 'Martha', 'Moira'],
+  'en-AU-female': ['Karen', 'Catherine', 'Lee'],
+};
+
+const VOICE_PROFILES = [
+  { id: 'en-US-male',   label: 'American Man',  emoji: '🇺🇸👨', lang: 'en-US', gender: 'male',   pitch: 1.0, rate: 0.85 },
+  { id: 'en-US-female', label: 'American Woman', emoji: '🇺🇸👩', lang: 'en-US', gender: 'female', pitch: 1.0, rate: 0.9  },
+  { id: 'en-GB-male',   label: 'British Man',    emoji: '🇬🇧👨', lang: 'en-GB', gender: 'male',   pitch: 1.0, rate: 0.85 },
+  { id: 'en-GB-female', label: 'British Woman',  emoji: '🇬🇧👩', lang: 'en-GB', gender: 'female', pitch: 1.0, rate: 0.9  },
+  { id: 'en-AU-female', label: 'Australian',     emoji: '🇦🇺👩', lang: 'en-AU', gender: 'female', pitch: 1.0, rate: 0.9  },
+];
+
+// ── Load all available voices from the device ──────────────────────
+function getVoiceList() {
+  return new Promise(resolve => {
+    const v = synth.getVoices();
+    if (v.length > 0) { allVoices = v; resolve(v); return; }
+    synth.onvoiceschanged = () => { allVoices = synth.getVoices(); resolve(allVoices); };
+    setTimeout(() => { allVoices = synth.getVoices(); resolve(allVoices); }, 1500);
+  });
+}
+
+// ── Pick voice by exact name priority list ─────────────────────────
+function pickVoice(profileId, voices) {
+  const priorities = VOICE_PRIORITY[profileId] || [];
+  
+  // 1. Try exact name match (case-insensitive)
+  for (const name of priorities) {
+    const found = voices.find(v => v.name.toLowerCase() === name.toLowerCase());
+    if (found) return { voice: found, installed: true };
+  }
+
+  // 2. Try partial name match
+  for (const name of priorities) {
+    const found = voices.find(v => v.name.toLowerCase().includes(name.toLowerCase()));
+    if (found) return { voice: found, installed: true };
+  }
+
+  // 3. Not installed — return null so we can prompt user
+  return { voice: null, installed: false };
+}
+
+// ── Get the preferred (not-yet-installed) voice name for a profile ──
+function getPreferredVoiceName(profileId) {
+  return (VOICE_PRIORITY[profileId] || ['Unknown'])[0];
+}
+
+// ── Check which profiles have their preferred voice installed ───────
+async function checkInstalledVoices() {
+  const voices = await getVoiceList();
+  const status = {};
+  for (const profile of VOICE_PROFILES) {
+    const { voice } = pickVoice(profile.id, voices);
+    status[profile.id] = {
+      installed: !!voice,
+      voiceName: voice ? voice.name : getPreferredVoiceName(profile.id),
+    };
+  }
+  return status;
+}
+
+// ── Load and cache a voice profile ────────────────────────────────
+async function loadVoiceProfile(profileId) {
+  const profile = VOICE_PROFILES.find(p => p.id === profileId) || VOICE_PROFILES[1];
+  const voices  = await getVoiceList();
+  const { voice, installed } = pickVoice(profileId, voices);
+
+  if (voice) {
+    cachedVoice     = voice;
+    cachedProfileId = profileId;
+  } else {
+    // Voice not installed — fall back to any available English voice
+    // but keep the profileId so pitch still applies
+    const fallback = voices.find(v => v.lang.startsWith('en')) || voices[0];
+    cachedVoice     = fallback || null;
+    cachedProfileId = profileId;
+  }
+
+  return { profile, installed };
+}
+
+// ── Speak a word ───────────────────────────────────────────────────
+async function speakWord(text, profileId = null) {
+  if (!synth) return;
+  synth.cancel();
+
+  if (profileId) {
+    await loadVoiceProfile(profileId);
+  } else if (!cachedProfileId) {
+    await loadVoiceProfile('en-US-female');
+  }
+
+  const profile = VOICE_PROFILES.find(p => p.id === cachedProfileId);
+  if (!profile) return;
+
+  const utt = new SpeechSynthesisUtterance(text);
+  if (cachedVoice) {
+    utt.voice = cachedVoice;
+    utt.lang  = cachedVoice.lang;
+  } else {
+    utt.lang = profile.lang;
+  }
+  utt.pitch  = profile.pitch;
+  utt.rate   = profile.rate;
+  utt.volume = 1;
+  synth.speak(utt);
+}
+
+function stopSpeaking() {
+  if (synth) synth.cancel();
+}
+
+function normalizeAnswer(str) {
+  return str.replaceAll(' ', '').toLowerCase().trim();
+}
+
+
+// ── timer.js ──
+let timerId = null;
+let remaining = 0;
+let onTickCb = null;
+let onDoneCb = null;
+
+function startTimer(duration, onTick, onDone) {
+  stopTimer();
+  remaining = duration;
+  onTickCb = onTick;
+  onDoneCb = onDone;
+  onTick && onTick(remaining, duration);
+  timerId = setInterval(() => {
+    remaining--;
+    onTickCb && onTickCb(remaining, duration);
+    if (remaining <= 0) { stopTimer(); onDoneCb && onDoneCb(); }
+  }, 1000);
+}
+
+function pauseTimer() {
+  if (timerId) { clearInterval(timerId); timerId = null; }
+}
+
+function resumeTimer(onTick, onDone, duration) {
+  if (timerId) return;
+  onTickCb = onTick || onTickCb;
+  onDoneCb = onDone || onDoneCb;
+  timerId = setInterval(() => {
+    remaining--;
+    onTickCb && onTickCb(remaining, duration);
+    if (remaining <= 0) { stopTimer(); onDoneCb && onDoneCb(); }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerId) { clearInterval(timerId); timerId = null; }
+  remaining = 0;
+}
+
+
+// ── historyService.js ──
+
+
+async function saveAttempt({ score, total, listName, wrongWords, mode }) {
+  const accuracy = total > 0 ? Math.round(score / total * 100) : 0;
+  const entry = { score, total, listName, wrongWords: wrongWords || [], mode, accuracy, date: new Date().toISOString() };
+  await addHistory(entry);
+  await addRecord({ ...entry });
+  return entry;
+}
+
+async function getAllHistory() {
+  const all = await getHistory();
+  return all.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+async function getTopRecords() {
+  const all = await getRecords();
+  return all.sort((a, b) => (b.score / b.total) - (a.score / a.total)).slice(0, 10);
+}
+
+function getStars(accuracy) {
+  if (accuracy >= 90) return '⭐⭐⭐';
+  if (accuracy >= 70) return '⭐⭐';
+  if (accuracy >= 50) return '⭐';
+  return '🌱';
+}
+
+
+// ── listService.js ──
+
+
+const DEFAULT_JAD = {
+  id: 'jad-default', name: 'Jad', icon: '🐝',
+  words: 'After.All.Animal.Baby.Before.Birthday.Bring.Clean.Buy.Again.Always.Around.Because.Better.Black.Brother.Busy.Carry.Close.Come.Happy.Funny.Finish.Could.Dance.Kind.Drink.Pretty.Foggy.Pull.Long.Little.Mother.Mistake.Today.Start.Desk.Nice.Windy.High.Winner.Score.Player.Fug.France.Basket.Warm.Cape.Show.Venom.Ring.Sleep.Button.Fork.Answer.Family.Igloo.Listen.Harm.Photo.Evening.Sale.Super.Fish.Among.Bend.Blanket.Walk.Root.Mirror.Zebra.Tail.Purple.Nest.Duck.Roll.Rest.Lemon.Apricot.Spring.Orange.Interesting.Horror.Remember.Weather.Women.Favorite.Underrate.Yacht.Together.Yesterday.Mile.Picture.Hungry.Teacher.Restroom.Coffee.Whiteboard.Curtain.Gorilla.Telephone'.split('.')
+};
+const DEFAULT_ADAM = {
+  id: 'adam-default', name: 'Adam', icon: '🌟',
+  words: 'Hexagon.Vegetables.Multiple.Country.Tissue.Exercise.Finally.Graphic.Magazine.Volume.Manufacture.Magnetic.Hundredth.Because.Yesterday.Mosque.Stomach.Pattern.Motion.Money.Survive.Hospital.Liquid.Trouble.Sphere.Cultural.Subtraction.Fragrance.Strange.Manners.Diamond.Success.Luggage.Crowded.Problem.Complain.Calendar.Accident.Bicycle.Educate.Address.Scissors.Supermarket.Squeeze.Choice.Moment.Charcoal.Snuggle.Publisher.Creature.Structure.Capture.Handlebars.Friendship.Grateful.Transport.Election.Perhaps.Advance.Identify.Robotics.Waterproof.Kingdom.Blindfold.Spotlight.Familiar.Broccoli.Scheme.Yogurt.Macaroni.Washable.Primary.Electric.Various.Personal.Average.Conduct.Bilingual.Maintain.Ourselves.Thermometer.Temperature.Current.Digestive.Carnivore.Herbivore.Evaporation.Population.Imagination.Hibernation.Manuscript.Acknowledge.Central.Chuckle.Unfortunately.Earthquake.Pitcher.Particle.Cartridge.Academic.Caution.Bridges.Vitamin.Calculation.Engineer.Technology.Electricity.Generate.Parallel.University.Lightning.Figures.Swelling.Available.Disposable.Syllable.Mysteries.Argument.Interaction.Multiplication.Camouflage.Predator.Nightmare.Signature.Furniture.Departure.Continent.Architecture.Leisure.Iceberg.Courage.Currency.Landscape.Probably.Dimension.Purchase.Ornament.Quantity.Although.Invitation.Increase.Stretched.Suggest.Adoption.Immature.Corruption.Affection.Construction.Profession.Inspection.Staircase.Burden.Surgeon.Merchant.Generalize'.split('.')
+};
+
+async function seedDefaults() {
+  const ids = (await getLists()).map(l => l.id);
+  if (!ids.includes(DEFAULT_JAD.id))  await saveList(DEFAULT_JAD);
+  if (!ids.includes(DEFAULT_ADAM.id)) await saveList(DEFAULT_ADAM);
+}
+
+async function getAllLists() {
+  await seedDefaults();
+  return getLists();
+}
+
+async function createList(name, words = []) {
+  const icons = ['📚','🌈','⭐','🎯','🎪','🦋','🌺','🎨'];
+  const list = { id: 'list-' + Date.now(), name, icon: icons[Math.floor(Math.random() * icons.length)], words };
+  await saveList(list);
+  return list;
+}
+
+async function removeList(id) { await deleteList(id); }
+
+async function addWordToList(listId, word) {
+  const list = await getList(listId);
+  if (!list) return;
+  const w = word.trim().toLowerCase();
+  if (!w || list.words.includes(w)) return list;
+  list.words.push(w);
+  await saveList(list);
+  return list;
+}
+
+async function removeWordFromList(listId, word) {
+  const list = await getList(listId);
+  if (!list) return;
+  list.words = list.words.filter(w => w !== word);
+  await saveList(list);
+  return list;
+}
+
+function shuffleWords(words) {
+  const arr = [...words];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+async function updateList(list) {
+  await saveList(list);
+  return list;
+}
+
+
+// ── settingsService.js ──
+
+
+
+async function getTheme()        { return (await getSetting('theme')) || 'light'; }
+async function getDefaultTimer() { const v = await getSetting('defaultTimer'); return v === null ? 10 : v; }
+async function getVoiceProfile() { return (await getSetting('voiceProfile')) || 'en-US-female'; }
+async function getVoiceCountry() { return (await getSetting('voiceCountry')) || 'en-US'; }
+
+async function saveTheme(theme) {
+  await setSetting('theme', theme);
+  setState({ theme });
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+async function saveDefaultTimer(val) {
+  await setSetting('defaultTimer', val);
+  setState({ defaultTimer: val, timerDuration: val });
+}
+
+async function saveVoiceProfile(id) {
+  await setSetting('voiceProfile', id);
+  setState({ voiceProfile: id });
+}
+
+async function saveVoiceCountry(code) {
+  await setSetting('voiceCountry', code);
+}
+
+
+// ── BackButton.js ──
+
+
+function BackButton(destination = 'home', label = '‹') {
+  const btn = document.createElement('button');
+  btn.className = 'back-btn';
+  btn.textContent = label;
+  btn.setAttribute('aria-label', 'Go back');
+  btn.addEventListener('click', () => navigate(destination));
+  return btn;
+}
+
+
+// ── ProgressBar.js ──
+function ProgressBar(current, total) {
+  const pct = total > 0 ? Math.min(current / total * 100, 100) : 0;
+  const wrap = document.createElement('div');
+  wrap.className = 'progress-bar-wrap';
+  const fill = document.createElement('div');
+  fill.className = 'progress-bar-fill';
+  fill.style.width = `${pct}%`;
+  wrap.appendChild(fill);
+  wrap.update = (c, t) => {
+    fill.style.width = `${t > 0 ? Math.min(c / t * 100, 100) : 0}%`;
+  };
+  return wrap;
+}
+
+
+// ── TimerCircle.js ──
+function TimerCircle(duration) {
+  const circumference = 2 * Math.PI * 38;
+  const wrap = document.createElement('div');
+  wrap.className = 'timer-circle-wrap';
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', 100);
+  svg.setAttribute('height', 100);
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.style.display = 'block';
+
+  const track = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  track.setAttribute('cx', 50); track.setAttribute('cy', 50); track.setAttribute('r', 38);
+  track.classList.add('timer-track');
+
+  const fill = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  fill.setAttribute('cx', 50); fill.setAttribute('cy', 50); fill.setAttribute('r', 38);
+  fill.classList.add('timer-fill', 'green');
+  fill.setAttribute('stroke-dasharray', circumference);
+  fill.setAttribute('stroke-dashoffset', 0);
+  fill.style.transformOrigin = '50px 50px';
+  fill.style.transform = 'rotate(-90deg)';
+
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.setAttribute('x', 50); text.setAttribute('y', 50);
+  text.setAttribute('text-anchor', 'middle'); text.setAttribute('dy', '0.35em');
+  text.style.fontFamily = "'Lexend', sans-serif";
+  text.style.fontWeight = '900';
+  text.style.fontSize = '26px';
+  text.style.fill = 'var(--text-primary)';
+  text.textContent = duration === 0 ? '∞' : duration;
+
+  svg.appendChild(track); svg.appendChild(fill); svg.appendChild(text);
+  wrap.appendChild(svg);
+
+  wrap.update = (remaining, total) => {
+    if (total === 0) {
+      text.textContent = '∞';
+      fill.setAttribute('stroke-dashoffset', 0);
+      fill.classList.remove('green', 'orange', 'red');
+      fill.classList.add('green');
+      return;
+    }
+    const offset = circumference * (1 - Math.max(0, remaining / total));
+    fill.setAttribute('stroke-dashoffset', offset);
+    text.textContent = remaining <= 0 ? '0' : String(remaining);
+    fill.classList.remove('green', 'orange', 'red');
+    if (remaining > 7)      { fill.classList.add('green');  text.style.fill = 'var(--text-primary)'; }
+    else if (remaining > 3) { fill.classList.add('orange'); text.style.fill = 'var(--bee-orange)'; }
+    else                    { fill.classList.add('red');    text.style.fill = 'var(--bee-red)'; }
+  };
+
+  return wrap;
+}
+
+
+// ── ActionButtons.js ──
+function showToast(message, duration = 2500) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
+}
+
+
+// ── ListCard.js ──
+function ListCard({ list, onSelect, onEdit, onDelete, showActions = false, selected = false }) {
+  const card = document.createElement('div');
+  card.className = 'list-card' + (selected ? ' selected' : '');
+
+  const icon = document.createElement('div');
+  icon.className = 'list-card-icon';
+  icon.textContent = list.icon || '📚';
+
+  const info = document.createElement('div');
+  info.className = 'list-card-info';
+
+  const name = document.createElement('div');
+  name.className = 'list-card-name';
+  name.textContent = list.name;
+
+  const count = document.createElement('div');
+  count.className = 'list-card-count';
+  count.textContent = `${list.words.length} words`;
+
+  info.appendChild(name);
+  info.appendChild(count);
+  card.appendChild(icon);
+  card.appendChild(info);
+
+  if (showActions && (onEdit || onDelete)) {
+    const actions = document.createElement('div');
+    actions.className = 'list-card-actions';
+    if (onEdit) {
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn btn-icon';
+      editBtn.textContent = '✏️';
+      editBtn.addEventListener('click', (e) => { e.stopPropagation(); onEdit(list); });
+      actions.appendChild(editBtn);
+    }
+    if (onDelete) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn btn-icon';
+      delBtn.textContent = '🗑️';
+      delBtn.addEventListener('click', (e) => { e.stopPropagation(); onDelete(list); });
+      actions.appendChild(delBtn);
+    }
+    card.appendChild(actions);
+  }
+
+  if (onSelect) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => onSelect(list));
+  }
+
+  return card;
+}
+
+
+// ── splash.js ──
+
+
+
+async function renderSplash(container) {
+  // Force body and container to full screen before splash renders
+  // web: light background tint during splash
+  document.body.style.background = '#8b5cf6';
+
+  const screen = document.createElement('div');
+  screen.className = 'splash-screen';
+  // Belt-and-suspenders: inline styles guarantee full coverage
+  // regardless of any CSS loading delays
+  screen.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #667eea 0%, #764ba2 50%, #f64f59 100%);
+    padding: 40px 20px;
+    box-sizing: border-box;
+    z-index: 999;
+  `;
+
+  screen.innerHTML = `
+    <div class="splash-bee">🐝</div>
+    <div class="splash-title">Al Jbour</div>
+    <div class="splash-subtitle">Spelling Bee Practice App</div>
+    <div class="splash-greeting">حياكم 🌷</div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  `;
+
+  container.appendChild(screen);
+
+  // Seed default lists in background
+  await getAllLists();
+
+  setTimeout(() => {
+    document.body.style.background = '';
+    navigate('home');
+  }, 2200);
+}
+
+
+// ── home.js ──
+
+
+function renderHome(container) {
+  const screen = document.createElement('div');
+  screen.className = 'screen home-screen';
+
+  const header = document.createElement('div');
+  header.className = 'home-header';
+  header.innerHTML = `
+    <span class="home-bee">🐝</span>
+    <div class="home-title">Al Jbour</div>
+    <div class="home-subtitle">Spelling Bee Practice App</div>
+  `;
+  screen.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'home-grid';
+
+  const cards = [
+    { nav: 'practice',       icon: '🎯', label: 'Practice', desc: 'Start spelling!' },
+    { nav: 'listManagement', icon: '📚', label: 'Lists',    desc: 'Manage words' },
+    { nav: 'settings',       icon: '⚙️', label: 'Settings', desc: 'Customize app' },
+    { nav: 'history',        icon: '🏆', label: 'History',  desc: 'Your records' },
+  ];
+
+  cards.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'home-card';
+    btn.innerHTML = `
+      <div class="home-card-icon">${c.icon}</div>
+      <div class="home-card-label">${c.label}</div>
+      <div class="home-card-desc">${c.desc}</div>
+    `;
+    btn.addEventListener('click', () => navigate(c.nav));
+    grid.appendChild(btn);
+  });
+
+  screen.appendChild(grid);
+
+  // Force correct layout using actual physical screen size
+  // window.innerWidth can be wrong in Capacitor on iPad —
+  // use screen.width which always returns the real hardware width
+  function applyLayout() {
+    const physicalWidth = Math.max(
+      window.screen.width,
+      window.screen.height, // landscape
+      window.innerWidth,
+      document.documentElement.clientWidth
+    );
+
+    // iPad Air 11" = 820pt wide. Any device >= 700pt is a tablet.
+    const isTablet = physicalWidth >= 700;
+
+    // Force the grid to 4 columns on tablet, 2 on phone
+    grid.style.gridTemplateColumns = isTablet
+      ? 'repeat(4, 1fr)'
+      : 'repeat(2, 1fr)';
+    grid.style.gap = isTablet ? '20px' : '14px';
+
+    // Force screen and container to full width
+    screen.style.width = '100%';
+    screen.style.minWidth = '100%';
+    container.style.width = '100%';
+    container.style.minWidth = '100%';
+
+    // Force cards to be bigger on tablet
+    if (isTablet) {
+      grid.querySelectorAll('.home-card').forEach(card => {
+        card.style.minHeight = '160px';
+        card.style.padding = '32px 20px';
+      });
+      grid.querySelectorAll('.home-card-icon').forEach(el => {
+        el.style.fontSize = '52px';
+      });
+    }
+  }
+
+  applyLayout();
+  // Re-apply on resize (orientation change)
+  window.addEventListener('resize', applyLayout);
+  // Also after a tick in case WebView hasn't settled
+  setTimeout(applyLayout, 100);
+  setTimeout(applyLayout, 500);
+
+  container.appendChild(screen);
+}
+
+
+// ── practice.js ──
+
+
+
+
+
+
+async function renderPractice(container) {
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('home'));
+
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'Choose a List';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  const lists = await getAllLists();
+
+  if (lists.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `
+      <div class="empty-state-icon">📭</div>
+      <div class="empty-state-text">No lists yet</div>
+      <div class="empty-state-sub">Go to List Management to create one</div>
+    `;
+    screen.appendChild(empty);
+  } else {
+    const label = document.createElement('div');
+    label.className = 'section-heading';
+    label.textContent = 'Your spelling lists';
+    screen.appendChild(label);
+
+    lists.forEach(list => {
+      const card = ListCard({
+        list,
+        onSelect: (selectedList) => {
+          setState({ currentList: selectedList });
+          navigate('setup');
+        }
+      });
+      screen.appendChild(card);
+    });
+  }
+
+  container.appendChild(screen);
+}
+
+
+// ── setup.js ──
+
+
+
+
+
+
+
+async function renderSetup(container) {
+  const state = getState();
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('practice'));
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'Practice Setup';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  // Show selected list
+  if (state.currentList) {
+    const listCard = document.createElement('div');
+    listCard.className = 'list-card';
+    listCard.style.marginBottom = '20px';
+    listCard.innerHTML = `
+      <div class="list-card-icon">${state.currentList.icon || '📚'}</div>
+      <div class="list-card-info">
+        <div class="list-card-name">${state.currentList.name}</div>
+        <div class="list-card-count">${state.currentList.words.length} words</div>
+      </div>
+    `;
+    screen.appendChild(listCard);
+  }
+
+  // ── Style ──
+  let practiceMode = state.practiceMode || 'coach';
+  const styleSection = document.createElement('div');
+  styleSection.className = 'setup-section';
+  const styleLabel = document.createElement('div');
+  styleLabel.className = 'setup-label';
+  styleLabel.textContent = '🎨 Style';
+  styleSection.appendChild(styleLabel);
+
+  const optionCards = document.createElement('div');
+  optionCards.className = 'option-cards';
+  const modes = [
+    { id: 'coach', icon: '🧑', label: 'Coach',     desc: 'Word shown on screen' },
+    { id: 'self',  icon: '🎧', label: 'Self Test', desc: 'Type your answer' },
+  ];
+  const modeEls = {};
+  modes.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'option-card' + (practiceMode === m.id ? ' selected' : '');
+    card.innerHTML = `<div class="option-card-icon">${m.icon}</div><div class="option-card-label">${m.label}</div><div class="option-card-desc">${m.desc}</div>`;
+    card.addEventListener('click', () => {
+      practiceMode = m.id;
+      Object.values(modeEls).forEach(el => el.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+    modeEls[m.id] = card;
+    optionCards.appendChild(card);
+  });
+  styleSection.appendChild(optionCards);
+  screen.appendChild(styleSection);
+
+  // ── Voice (Man / Woman) — FIXED ──
+  // Load saved voiceProfile and voiceCountry
+  const savedProfile = await getVoiceProfile();       // e.g. 'en-US-female'
+  const voiceCountry = await getVoiceCountry();       // e.g. 'en-US'
+  const savedProfObj = VOICE_PROFILES.find(p => p.id === savedProfile);
+  let currentGender  = savedProfObj ? savedProfObj.gender : 'female';
+
+  // Helper: given a gender, find the right profile ID for the current country
+  function profileIdForGender(gender) {
+    return (
+      VOICE_PROFILES.find(p => p.lang === voiceCountry && p.gender === gender && !p.id.includes('boy')) ||
+      VOICE_PROFILES.find(p => p.gender === gender && !p.id.includes('boy')) ||
+      VOICE_PROFILES[1]
+    ).id;
+  }
+
+  let currentProfileId = profileIdForGender(currentGender);
+
+  const voiceSection = document.createElement('div');
+  voiceSection.className = 'setup-section';
+  const voiceLabel = document.createElement('div');
+  voiceLabel.className = 'setup-label';
+  voiceLabel.textContent = '🎙 Voice';
+  voiceSection.appendChild(voiceLabel);
+
+  const voiceRow = document.createElement('div');
+  voiceRow.style.cssText = 'display:flex;gap:12px;';
+
+  const genders = [
+    { gender: 'female', icon: '👩', label: 'Woman' },
+    { gender: 'male',   icon: '👨', label: 'Man' },
+  ];
+  const genderEls = {};
+
+  genders.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'setup-voice-btn' + (currentGender === g.gender ? ' selected' : '');
+    btn.innerHTML = `<span style="font-size:28px;display:block;margin-bottom:4px;">${g.icon}</span><span style="font-size:14px;font-weight:800;">${g.label}</span>`;
+    btn.addEventListener('click', async () => {
+      currentGender    = g.gender;
+      currentProfileId = profileIdForGender(g.gender);
+      Object.values(genderEls).forEach(el => el.classList.remove('selected'));
+      btn.classList.add('selected');
+      // Save then force-load the voice (loadVoiceProfile clears old cache)
+      await saveVoiceProfile(currentProfileId);
+      await loadVoiceProfile(currentProfileId);  // caches the new voice
+      setState({ voiceProfile: currentProfileId });
+      // Pass profileId to speakWord so it uses the just-loaded voice
+      await speakWord('spelling', currentProfileId);
+    });
+    genderEls[g.gender] = btn;
+    voiceRow.appendChild(btn);
+  });
+  voiceSection.appendChild(voiceRow);
+  screen.appendChild(voiceSection);
+
+  // ── Timer ──
+  let timerDuration = state.timerDuration !== undefined && state.timerDuration !== null ? state.timerDuration : 10;
+  const timerSection = document.createElement('div');
+  timerSection.className = 'setup-section';
+  const timerLabel = document.createElement('div');
+  timerLabel.className = 'setup-label';
+  timerLabel.textContent = '⏱ Timer';
+  timerSection.appendChild(timerLabel);
+
+  const timerWrap = document.createElement('div');
+  timerWrap.className = 'timer-slider-wrapper';
+  const timerVal = document.createElement('div');
+  timerVal.className = 'timer-value-display' + (timerDuration === 0 ? ' off' : '');
+  timerVal.textContent = timerDuration === 0 ? 'Off' : timerDuration + 's';
+  timerWrap.appendChild(timerVal);
+
+  const slider = document.createElement('input');
+  slider.type = 'range';
+  slider.className = 'slider';
+  slider.min = 0; slider.max = 20; slider.step = 1;
+  slider.value = timerDuration;
+  const updateSliderPct = v => slider.style.setProperty('--slider-pct', (v / 20 * 100) + '%');
+  updateSliderPct(timerDuration);
+  slider.addEventListener('input', () => {
+    timerDuration = parseInt(slider.value);
+    timerVal.textContent = timerDuration === 0 ? 'Off' : timerDuration + 's';
+    timerVal.className = 'timer-value-display' + (timerDuration === 0 ? ' off' : '');
+    updateSliderPct(timerDuration);
+  });
+  timerWrap.appendChild(slider);
+
+  const sliderLabels = document.createElement('div');
+  sliderLabels.className = 'slider-labels';
+  sliderLabels.innerHTML = '<span>Off</span><span>5s</span><span>10s</span><span>15s</span><span>20s</span>';
+  timerWrap.appendChild(sliderLabels);
+  timerSection.appendChild(timerWrap);
+  screen.appendChild(timerSection);
+
+  // ── Start Button ──
+  const startBtn = document.createElement('button');
+  startBtn.className = 'btn btn-primary btn-full mt-20';
+  startBtn.style.cssText = 'font-size:20px;padding:18px;';
+  startBtn.textContent = 'Start Adventure 🚀';
+  startBtn.addEventListener('click', async () => {
+    const list = state.currentList;
+    if (!list || list.words.length === 0) return;
+    // Ensure the correct profile is saved and loaded
+    currentProfileId = profileIdForGender(currentGender);
+    await saveVoiceProfile(currentProfileId);
+    await loadVoiceProfile(currentProfileId);
+    setState({
+      voiceProfile: currentProfileId,
+      practiceMode: practiceMode,
+      timerDuration: timerDuration,
+      practiceWords: shuffleWords(list.words),
+      currentWordIndex: 0,
+      correctWords: [],
+      wrongWords: [],
+      sessionScore: 0,
+      isPaused: false,
+      retryWords: null,
+    });
+    navigate('test');
+  });
+  screen.appendChild(startBtn);
+  container.appendChild(screen);
+}
+
+
+// ── test.js ──
+
+
+
+
+
+
+
+
+
+function renderTest(container) {
+  const state = getState();
+  const words = state.retryWords ? [...state.retryWords] : [...state.practiceWords];
+  const total = words.length;
+  const isCoach = state.practiceMode === 'coach';
+  let currentIdx = 0;
+  let isPaused = false;
+  let correctCount = 0;
+  const wrongWords = [];
+  let stopwatchSeconds = 0;
+  let stopwatchInterval = null;
+
+  if (total === 0) { navigate('home'); return; }
+
+  const voiceProfile = state.voiceProfile || 'en-US-female';
+  const timerDuration = state.timerDuration || 0;
+
+  // ─────────────────────────────────────────
+  // SELF-TEST: fixed-layout screen that fits
+  // perfectly above the keyboard.
+  // COACH: normal scrollable screen.
+  // ─────────────────────────────────────────
+
+  if (!isCoach) {
+    renderSelfTest();
+  } else {
+    renderCoachTest();
+  }
+
+  // ══════════════════════════════════════════════════════
+  // SELF TEST — fixed layout, keyboard always open
+  // Screen is split: everything sits in the top visible
+  // area. Uses position:fixed + visualViewport height.
+  // ══════════════════════════════════════════════════════
+  function renderSelfTest() {
+    // ─────────────────────────────────────────────────────
+    // SELF TEST LAYOUT — everything is static, nothing moves
+    //
+    // Structure (top to bottom, all fixed heights):
+    //   [Progress bar row]          — flex-shrink:0
+    //   [Stats: ✅ N  ⏱ 0:00  N ❌] — flex-shrink:0
+    //   [Timer row: circle + feedback side by side] — flex-shrink:0
+    //   [Input row: text box + Submit button inline] — flex-shrink:0
+    //   [Action row: Spell | Pause | Skip | Exit]   — flex-shrink:0
+    //
+    // Feedback shows INSIDE the timer row (next to the circle).
+    // Submit is INLINE with the input (right side).
+    // Nothing shifts when feedback appears.
+    // ─────────────────────────────────────────────────────
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'self-test-wrapper';
+    wrapper.style.cssText = `
+      position: fixed;
+      left: 0; right: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-primary);
+      box-sizing: border-box;
+      z-index: 10;
+      overflow: hidden;
+      padding-left: 14px;
+      padding-right: 14px;
+      padding-bottom: 10px;
+      gap: 8px;
+    `;
+
+    function setWrapperSize() {
+      const vp = window.visualViewport;
+      if (vp) {
+        wrapper.style.top    = Math.round(vp.offsetTop) + 'px';
+        wrapper.style.height = Math.round(vp.height)    + 'px';
+        wrapper.style.paddingTop = Math.max(44, Math.round(vp.offsetTop > 0 ? 8 : 44)) + 'px';
+      } else {
+        wrapper.style.top        = '0';
+        wrapper.style.height     = window.innerHeight + 'px';
+        wrapper.style.paddingTop = '44px';
+      }
+    }
+    setWrapperSize();
+    // visualViewport resize handled natively on web browsers
+    if (window.visualViewport) { window.visualViewport.addEventListener('resize', setWrapperSize); }
+
+    // ── ROW 1: Progress bar + count label ──
+    const progressRow = document.createElement('div');
+    progressRow.style.cssText = 'display:flex;align-items:center;gap:8px;flex-shrink:0;';
+    const progressInner = document.createElement('div');
+    progressInner.style.cssText = 'flex:1;position:relative;';
+    const progressBar = ProgressBar(0, total);
+    progressInner.appendChild(progressBar);
+    const pctLabel = document.createElement('div');
+    pctLabel.className = 'test-pct-label';
+    pctLabel.textContent = '0%';
+    progressInner.appendChild(pctLabel);
+    const countLabel = document.createElement('div');
+    countLabel.style.cssText = 'font-family:var(--font-display);font-size:11px;font-weight:800;color:var(--bee-purple);white-space:nowrap;flex-shrink:0;';
+    countLabel.textContent = '0/' + total;
+    progressRow.appendChild(progressInner);
+    progressRow.appendChild(countLabel);
+    wrapper.appendChild(progressRow);
+
+    // ── ROW 2: ✅ correct / ⏱ stopwatch / ❌ wrong ──
+    const statsRow = document.createElement('div');
+    statsRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;flex-shrink:0;';
+    const correctBadge = document.createElement('div');
+    correctBadge.className = 'test-badge test-badge-correct';
+    correctBadge.innerHTML = '<span>✅</span><span class="test-badge-num" id="correct-count">0</span>';
+    const stopwatchEl = document.createElement('div');
+    stopwatchEl.className = 'test-stopwatch';
+    stopwatchEl.textContent = '⏱ 0:00';
+    const wrongBadge = document.createElement('div');
+    wrongBadge.className = 'test-badge test-badge-wrong';
+    wrongBadge.innerHTML = '<span class="test-badge-num" id="wrong-count">0</span><span>❌</span>';
+    statsRow.appendChild(correctBadge);
+    statsRow.appendChild(stopwatchEl);
+    statsRow.appendChild(wrongBadge);
+    wrapper.appendChild(statsRow);
+
+    // ── ROW 3: Timer circle (left) + Feedback (right, fixed height) ──
+    // This row has a FIXED height so feedback never shifts anything below it.
+    const timerFeedbackRow = document.createElement('div');
+    timerFeedbackRow.style.cssText = `
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      height: 72px;
+    `;
+
+    const timerCircle = TimerCircle(timerDuration);
+    if (timerDuration === 0) {
+      timerCircle.style.cssText = 'display:none;';
+    } else {
+      timerCircle.style.cssText = 'flex-shrink:0;transform:scale(0.68);transform-origin:left center;width:68px;height:68px;';
+    }
+    timerFeedbackRow.appendChild(timerCircle);
+
+    // Feedback lives here — fixed size, never pushes anything
+    const feedbackEl = document.createElement('div');
+    feedbackEl.id = 'feedback-el';
+    feedbackEl.style.cssText = `
+      flex: 1;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    timerFeedbackRow.appendChild(feedbackEl);
+    wrapper.appendChild(timerFeedbackRow);
+
+    // ── ROW 4: Input box (flex:1) + Submit button (right side) ──
+    const inputRow = document.createElement('div');
+    inputRow.style.cssText = 'display:flex;align-items:stretch;gap:8px;flex-shrink:0;';
+
+    // contenteditable to suppress iOS input accessory toolbar
+    const wordInput = document.createElement('div');
+    wordInput.id = 'word-input-ce';
+    wordInput.contentEditable = 'true';
+    wordInput.setAttribute('inputmode', 'text');
+    wordInput.setAttribute('autocorrect', 'off');
+    wordInput.setAttribute('autocapitalize', 'none');
+    wordInput.setAttribute('spellcheck', 'false');
+    wordInput.setAttribute('enterkeyhint', 'done');
+    wordInput.setAttribute('role', 'textbox');
+    wordInput.dataset.placeholder = 'Spell the word...';
+    wordInput.style.cssText = `
+      flex: 1;
+      min-height: 52px;
+      border: 2.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      text-align: center;
+      box-sizing: border-box;
+      outline: none;
+      cursor: text;
+      -webkit-user-select: text;
+      user-select: text;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+
+    const ceStyle = document.createElement('style');
+    ceStyle.textContent = `
+      #word-input-ce:empty::before {
+        content: attr(data-placeholder);
+        color: var(--text-muted);
+        font-size: 15px;
+        font-weight: 500;
+        pointer-events: none;
+      }
+    `;
+    document.head.appendChild(ceStyle);
+
+    wordInput.addEventListener('focus', () => { wordInput.style.borderColor = 'var(--bee-purple)'; });
+    wordInput.addEventListener('blur',  () => { wordInput.style.borderColor = 'var(--border-color)'; });
+
+    const getInputValue = () => wordInput.innerText.replace(/\n/g, '').trim();
+    const clearInput    = () => { wordInput.innerText = ''; };
+
+    // Submit button — inline on the right
+    const submitBtn = document.createElement('button');
+    submitBtn.id = 'submit-btn';
+    submitBtn.style.cssText = `
+      flex-shrink: 0;
+      width: 90px;
+      min-height: 52px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(118,75,162,0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      line-height: 1.2;
+    `;
+    submitBtn.innerHTML = '<span style="font-size:18px;">✓</span><span>Submit</span>';
+
+    inputRow.appendChild(wordInput);
+    inputRow.appendChild(submitBtn);
+    wrapper.appendChild(inputRow);
+
+    // ── ROW 5: Action buttons — Spell | Pause | Skip | Exit ──
+    const actionRow = document.createElement('div');
+    actionRow.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;flex-shrink:0;';
+
+    const makeBtn = (icon, label) => {
+      const b = document.createElement('button');
+      b.className = 'test-action-btn';
+      b.style.cssText = 'padding:12px 4px 10px;';
+      b.innerHTML = `<span class="test-action-icon" style="font-size:20px;">${icon}</span><span class="test-action-label" style="font-size:11px;">${label}</span>`;
+      return b;
+    };
+    const spellBtn = makeBtn('🔊', 'Spell');
+    const pauseBtn = makeBtn('⏸', 'Pause');
+    const skipBtn  = makeBtn('⏭', 'Skip');
+    const exitBtn  = makeBtn('🚪', 'Exit');
+    actionRow.appendChild(spellBtn);
+    actionRow.appendChild(pauseBtn);
+    actionRow.appendChild(skipBtn);
+    actionRow.appendChild(exitBtn);
+    wrapper.appendChild(actionRow);
+
+    document.body.appendChild(wrapper);
+    container.innerHTML = '';
+
+    const cleanup = () => {
+      wrapper.remove();
+      ceStyle.remove();
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', setWrapperSize);
+        window.visualViewport.removeEventListener('scroll', setWrapperSize);
+      }
+    };
+
+    // ── Helpers ──
+    const formatTime = s => '⏱ ' + Math.floor(s/60) + ':' + (s%60).toString().padStart(2,'0');
+    const startStopwatch = () => { if (stopwatchInterval) return; stopwatchInterval = setInterval(() => { stopwatchEl.textContent = formatTime(++stopwatchSeconds); }, 1000); };
+    const pauseStopwatch = () => { clearInterval(stopwatchInterval); stopwatchInterval = null; };
+    const stopStopwatch  = () => { clearInterval(stopwatchInterval); stopwatchInterval = null; };
+    const getCurrentWord = () => words[currentIdx];
+
+    function updateScoreBadges() {
+      const cc = document.getElementById('correct-count');
+      const wc = document.getElementById('wrong-count');
+      if (cc) cc.textContent = correctCount;
+      if (wc) wc.textContent = wrongWords.length;
+    }
+
+    function setInputFont(word) {
+      const len = word.length;
+      wordInput.style.fontSize = len <= 8 ? '20px' : len <= 12 ? '17px' : len <= 16 ? '14px' : '12px';
+    }
+
+    function updateDisplay(done) {
+      progressBar.update(done, total);
+      pctLabel.textContent = (total > 0 ? Math.round(done/total*100) : 0) + '%';
+      countLabel.textContent = done + '/' + total;
+      updateScoreBadges();
+      clearInput();
+      setInputFont(getCurrentWord());
+      // Clear feedback without moving anything (fixed-height container)
+      feedbackEl.textContent = '';
+      feedbackEl.style.color = '';
+      if (!isPaused) setTimeout(() => wordInput.focus(), 50);
+    }
+
+    function showFeedback(isCorrect, msg) {
+      feedbackEl.textContent = msg || (isCorrect ? '✅ Correct!' : '❌ Wrong!');
+      feedbackEl.style.color = isCorrect ? 'var(--bee-green)' : 'var(--bee-red)';
+    }
+
+    function startWordTimer() {
+      if (timerDuration === 0) return;
+      timerCircle.update(timerDuration, timerDuration);
+      startTimer(timerDuration,
+        (rem, tot) => timerCircle.update(rem, tot),
+        () => { showFeedback(false, '⏰ Time up!'); setTimeout(() => advanceWord(false), 800); }
+      );
+    }
+
+    function advanceWord(wasCorrect) {
+      stopTimer();
+      if (wasCorrect) correctCount++; else wrongWords.push(getCurrentWord());
+      updateScoreBadges();
+      const done = correctCount + wrongWords.length;
+      if (done >= total) { endSession(); return; }
+      currentIdx++;
+      updateDisplay(done);
+      speakWord(getCurrentWord(), voiceProfile);
+      startWordTimer();
+    }
+
+    async function endSession() {
+      stopTimer(); stopSpeaking(); stopStopwatch(); cleanup();
+      const listName = state.currentList ? state.currentList.name : 'Unknown';
+      if (!state.retryWords) await saveAttempt({ score: correctCount, total, listName, wrongWords, mode: 'self' });
+      setState({ sessionScore: correctCount, wrongWords });
+      navigate('results', { score: correctCount, total, wrongWords, listName });
+    }
+
+    const doSubmit = () => {
+      if (isPaused) return;
+      const answer = normalizeAnswer(getInputValue());
+      if (!answer) { showToast('Type your answer first!'); return; }
+      const isRight = answer === normalizeAnswer(getCurrentWord());
+      showFeedback(isRight);
+      stopTimer();
+      setTimeout(() => advanceWord(isRight), 900);
+    };
+
+    submitBtn.addEventListener('click', doSubmit);
+    wordInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); doSubmit(); }
+    });
+
+    spellBtn.addEventListener('click', () => { if (!isPaused) speakWord(getCurrentWord(), voiceProfile); });
+
+    skipBtn.addEventListener('click', () => {
+      if (isPaused) return;
+      stopTimer();
+      const w = words.splice(currentIdx, 1)[0];
+      words.push(w);
+      if (currentIdx >= words.length) currentIdx = 0;
+      updateDisplay(correctCount + wrongWords.length);
+      speakWord(getCurrentWord(), voiceProfile);
+      startWordTimer();
+      showToast('Word moved to end ⏭');
+    });
+
+    exitBtn.addEventListener('click', () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = '<div class="modal-box" style="text-align:center;"><div style="font-size:40px;margin-bottom:8px;">🚪</div><div class="modal-title">Exit Practice?</div><div style="font-size:14px;color:var(--text-muted);font-weight:600;margin-bottom:16px;">Progress will be saved.</div><div class="modal-btns"><button class="btn btn-ghost" id="exit-cancel">Keep Going</button><button class="btn btn-danger" id="exit-confirm">Exit</button></div></div>';
+      document.body.appendChild(overlay);
+      overlay.querySelector('#exit-cancel').addEventListener('click', () => overlay.remove());
+      overlay.querySelector('#exit-confirm').addEventListener('click', async () => {
+        overlay.remove(); stopTimer(); stopSpeaking(); stopStopwatch(); cleanup();
+        const listName = state.currentList ? state.currentList.name : 'Unknown';
+        if (!state.retryWords && correctCount + wrongWords.length > 0)
+          await saveAttempt({ score: correctCount, total: correctCount + wrongWords.length, listName, wrongWords, mode: 'self' });
+        setState({ sessionScore: 0, wrongWords: [], practiceWords: [] });
+        navigate('home');
+      });
+    });
+
+    let pausedOverlay = null;
+    pauseBtn.addEventListener('click', () => {
+      if (!isPaused) {
+        isPaused = true;
+        pauseTimer(); pauseStopwatch(); stopSpeaking();
+        pauseBtn.querySelector('.test-action-icon').textContent = '▶';
+        pauseBtn.querySelector('.test-action-label').textContent = 'Resume';
+        pausedOverlay = document.createElement('div');
+        pausedOverlay.className = 'paused-overlay';
+        pausedOverlay.innerHTML = '<div class="paused-box"><div class="paused-icon">⏸</div><div class="paused-text">Paused</div><div style="font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:600;">Tap to resume</div></div>';
+        pausedOverlay.addEventListener('click', () => pauseBtn.click());
+        document.body.appendChild(pausedOverlay);
+      } else {
+        isPaused = false;
+        pauseBtn.querySelector('.test-action-icon').textContent = '⏸';
+        pauseBtn.querySelector('.test-action-label').textContent = 'Pause';
+        if (pausedOverlay) { pausedOverlay.remove(); pausedOverlay = null; }
+        startStopwatch();
+        setTimeout(() => wordInput.focus(), 50);
+        if (timerDuration > 0) {
+          resumeTimer(
+            (rem, t) => timerCircle.update(rem, t),
+            () => { showFeedback(false, '⏰ Time up!'); setTimeout(() => advanceWord(false), 800); },
+            timerDuration
+          );
+        }
+      }
+    });
+
+    updateDisplay(0);
+    speakWord(getCurrentWord(), voiceProfile);
+    startWordTimer();
+    startStopwatch();
+    setTimeout(() => wordInput.focus(), 150);
+  }
+
+
+    function renderCoachTest() {
+    const screen = document.createElement('div');
+    screen.className = 'screen test-screen';
+
+    // Top bar
+    const topBar = document.createElement('div');
+    topBar.className = 'test-top-bar';
+
+    const progressRow = document.createElement('div');
+    progressRow.className = 'test-progress-row';
+    const progressBarWrap = document.createElement('div');
+    progressBarWrap.className = 'test-progress-inner';
+    const progressBar = ProgressBar(0, total);
+    progressBarWrap.appendChild(progressBar);
+    const progressPct = document.createElement('div');
+    progressPct.className = 'test-pct-label';
+    progressPct.id = 'progress-pct';
+    progressPct.textContent = '0%';
+    progressBarWrap.appendChild(progressPct);
+    const progressLabel = document.createElement('div');
+    progressLabel.id = 'progress-label';
+    progressLabel.style.cssText = 'font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--bee-purple);white-space:nowrap;min-width:40px;text-align:right;flex-shrink:0;';
+    progressLabel.textContent = '0 / ' + total;
+    progressRow.appendChild(progressBarWrap);
+    progressRow.appendChild(progressLabel);
+    topBar.appendChild(progressRow);
+
+    const statsRow = document.createElement('div');
+    statsRow.className = 'test-stats-row';
+    const correctBadge = document.createElement('div');
+    correctBadge.className = 'test-badge test-badge-correct';
+    correctBadge.innerHTML = '<span>✅</span><span class="test-badge-num" id="correct-count">0</span>';
+    const stopwatchEl = document.createElement('div');
+    stopwatchEl.className = 'test-stopwatch';
+    stopwatchEl.textContent = '⏱ 0:00';
+    const wrongBadge = document.createElement('div');
+    wrongBadge.className = 'test-badge test-badge-wrong';
+    wrongBadge.innerHTML = '<span class="test-badge-num" id="wrong-count">0</span><span>❌</span>';
+    statsRow.appendChild(correctBadge);
+    statsRow.appendChild(stopwatchEl);
+    statsRow.appendChild(wrongBadge);
+    topBar.appendChild(statsRow);
+    screen.appendChild(topBar);
+
+    // Timer circle
+    const timerCircle = TimerCircle(timerDuration);
+    if (timerDuration === 0) {
+      timerCircle.style.display = 'none';
+    } else {
+      timerCircle.style.cssText = 'display:flex;justify-content:center;align-items:center;width:100%;margin:0;';
+    }
+    screen.appendChild(timerCircle);
+
+    // Word card
+    const wordCard = document.createElement('div');
+    wordCard.className = 'test-word-card';
+    const wordText = document.createElement('div');
+    wordText.className = 'test-word-text';
+    wordText.id = 'coach-word-text';
+    wordCard.appendChild(wordText);
+    screen.appendChild(wordCard);
+
+    // Buttons
+    const makeBtn = (icon, label, extraClass) => {
+      const btn = document.createElement('button');
+      btn.className = 'test-action-btn' + (extraClass ? ' ' + extraClass : '');
+      btn.innerHTML = '<span class="test-action-icon">' + icon + '</span><span class="test-action-label">' + label + '</span>';
+      return btn;
+    };
+
+    const spellBtn   = makeBtn('🔊', 'Spell');
+    const pauseBtn   = makeBtn('⏸', 'Pause');
+    const skipBtn    = makeBtn('⏭', 'Skip');
+    const correctBtn = makeBtn('✅', 'Correct', 'test-btn-correct');
+    const wrongBtn   = makeBtn('❌', 'Wrong',   'test-btn-wrong');
+
+    const row1 = document.createElement('div');
+    row1.className = 'test-btn-row';
+    row1.appendChild(spellBtn);
+    row1.appendChild(pauseBtn);
+    row1.appendChild(skipBtn);
+    screen.appendChild(row1);
+
+    const row2 = document.createElement('div');
+    row2.className = 'test-btn-row';
+    row2.appendChild(correctBtn);
+    row2.appendChild(wrongBtn);
+    screen.appendChild(row2);
+
+    const exitBtn = document.createElement('button');
+    exitBtn.className = 'test-exit-btn';
+    exitBtn.innerHTML = '🚪 Exit';
+    screen.appendChild(exitBtn);
+
+    container.appendChild(screen);
+
+    // Helpers
+    const formatTime = s => '⏱ ' + Math.floor(s/60) + ':' + (s%60).toString().padStart(2,'0');
+    const startStopwatch = () => { if (stopwatchInterval) return; stopwatchInterval = setInterval(() => { stopwatchEl.textContent = formatTime(++stopwatchSeconds); }, 1000); };
+    const pauseStopwatch = () => { clearInterval(stopwatchInterval); stopwatchInterval = null; };
+    const stopStopwatch  = () => { clearInterval(stopwatchInterval); stopwatchInterval = null; };
+    const getCurrentWord = () => words[currentIdx];
+
+    function setWordDisplay(word) {
+      const el = document.getElementById('coach-word-text');
+      if (!el) return;
+      const len = word.length;
+      const size = len <= 5 ? 54 : len <= 7 ? 46 : len <= 9 ? 38 : len <= 11 ? 32 : len <= 13 ? 26 : len <= 16 ? 22 : 18;
+      const spacing = len <= 7 ? '5px' : len <= 10 ? '3px' : len <= 13 ? '2px' : '1px';
+      el.style.fontSize = size + 'px';
+      el.style.letterSpacing = spacing;
+      el.style.whiteSpace = 'nowrap';
+      el.style.overflow = 'visible';
+      el.style.width = '100%';
+      el.textContent = word.toUpperCase();
+    }
+
+    function updateScoreBadges() {
+      const cc = document.getElementById('correct-count');
+      const wc = document.getElementById('wrong-count');
+      if (cc) cc.textContent = correctCount;
+      if (wc) wc.textContent = wrongWords.length;
+    }
+
+    function updateDisplay(done) {
+      const word = getCurrentWord();
+      progressBar.update(done, total);
+      const pl = document.getElementById('progress-label');
+      if (pl) pl.textContent = done + ' / ' + total;
+      const pp = document.getElementById('progress-pct');
+      if (pp) pp.textContent = (total > 0 ? Math.round(done/total*100) : 0) + '%';
+      updateScoreBadges();
+      setWordDisplay(word);
+    }
+
+    function startWordTimer() {
+      if (timerDuration === 0) return;
+      timerCircle.update(timerDuration, timerDuration);
+      startTimer(timerDuration,
+        (rem, tot) => timerCircle.update(rem, tot),
+        () => { setTimeout(() => advanceWord(false), 800); }
+      );
+    }
+
+    function advanceWord(wasCorrect) {
+      stopTimer();
+      if (wasCorrect) correctCount++; else wrongWords.push(getCurrentWord());
+      updateScoreBadges();
+      const done = correctCount + wrongWords.length;
+      if (done >= total) { endSession(); return; }
+      currentIdx++;
+      updateDisplay(done);
+      speakWord(getCurrentWord(), voiceProfile);
+      startWordTimer();
+    }
+
+    async function endSession() {
+      stopTimer(); stopSpeaking(); stopStopwatch();
+      const listName = state.currentList ? state.currentList.name : 'Unknown';
+      if (!state.retryWords) await saveAttempt({ score: correctCount, total, listName, wrongWords, mode: 'coach' });
+      setState({ sessionScore: correctCount, wrongWords });
+      navigate('results', { score: correctCount, total, wrongWords, listName });
+    }
+
+    function confirmExit() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = '<div class="modal-box" style="text-align:center;"><div style="font-size:40px;margin-bottom:8px;">🚪</div><div class="modal-title">Exit Practice?</div><div style="font-size:14px;color:var(--text-muted);font-weight:600;margin-bottom:16px;">Progress will be saved to history.</div><div class="modal-btns"><button class="btn btn-ghost" id="exit-cancel">Keep Going</button><button class="btn btn-danger" id="exit-confirm">Exit</button></div></div>';
+      document.body.appendChild(overlay);
+      overlay.querySelector('#exit-cancel').addEventListener('click', () => overlay.remove());
+      overlay.querySelector('#exit-confirm').addEventListener('click', async () => {
+        overlay.remove(); stopTimer(); stopSpeaking(); stopStopwatch();
+        if (pausedOverlay) pausedOverlay.remove();
+        const listName = state.currentList ? state.currentList.name : 'Unknown';
+        if (!state.retryWords && correctCount + wrongWords.length > 0)
+          await saveAttempt({ score: correctCount, total: correctCount + wrongWords.length, listName, wrongWords, mode: 'coach' });
+        setState({ sessionScore: 0, wrongWords: [], practiceWords: [] });
+        navigate('home');
+      });
+    }
+
+    let pausedOverlay = null;
+
+    correctBtn.addEventListener('click', () => { if (!isPaused) advanceWord(true); });
+    wrongBtn.addEventListener('click',   () => { if (!isPaused) advanceWord(false); });
+    spellBtn.addEventListener('click',   () => { if (!isPaused) speakWord(getCurrentWord(), voiceProfile); });
+    skipBtn.addEventListener('click', () => {
+      if (isPaused) return;
+      stopTimer();
+      const w = words.splice(currentIdx, 1)[0];
+      words.push(w);
+      if (currentIdx >= words.length) currentIdx = 0;
+      updateDisplay(correctCount + wrongWords.length);
+      speakWord(getCurrentWord(), voiceProfile);
+      startWordTimer();
+      showToast('Word moved to end ⏭');
+    });
+    exitBtn.addEventListener('click', confirmExit);
+
+    pauseBtn.addEventListener('click', () => {
+      if (!isPaused) {
+        isPaused = true;
+        pauseTimer(); pauseStopwatch(); stopSpeaking();
+        pauseBtn.querySelector('.test-action-icon').textContent = '▶';
+        pauseBtn.querySelector('.test-action-label').textContent = 'Resume';
+        pausedOverlay = document.createElement('div');
+        pausedOverlay.className = 'paused-overlay';
+        pausedOverlay.innerHTML = '<div class="paused-box"><div class="paused-icon">⏸</div><div class="paused-text">Paused</div><div style="font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:600;">Tap to resume</div></div>';
+        pausedOverlay.addEventListener('click', () => pauseBtn.click());
+        document.body.appendChild(pausedOverlay);
+      } else {
+        isPaused = false;
+        pauseBtn.querySelector('.test-action-icon').textContent = '⏸';
+        pauseBtn.querySelector('.test-action-label').textContent = 'Pause';
+        if (pausedOverlay) { pausedOverlay.remove(); pausedOverlay = null; }
+        startStopwatch();
+        if (timerDuration > 0) {
+          resumeTimer(
+            (rem, t) => timerCircle.update(rem, t),
+            () => { setTimeout(() => advanceWord(false), 800); },
+            timerDuration
+          );
+        }
+      }
+    });
+
+    updateDisplay(0);
+    speakWord(getCurrentWord(), voiceProfile);
+    startWordTimer();
+    startStopwatch();
+  }
+}
+
+
+// ── results.js ──
+
+
+
+
+
+
+function renderResults(container, params = {}) {
+  const state = getState();
+  const score = params.score !== undefined ? params.score : state.sessionScore;
+  const total = params.total || state.practiceWords.length;
+  const wrongWords = params.wrongWords || state.wrongWords || [];
+  const listName = params.listName || (state.currentList ? state.currentList.name : 'Practice');
+
+  const accuracy = total > 0 ? Math.round((score / total) * 100) : 0;
+  const stars = getStars(accuracy);
+
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('home'));
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'Results';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  // Score hero
+  const hero = document.createElement('div');
+  hero.className = 'results-hero';
+  hero.innerHTML = `
+    <div class="results-score">${score}/${total}</div>
+    <div class="results-label">${listName} · ${accuracy}% accuracy</div>
+    <div class="stars-row">${stars}</div>
+  `;
+  screen.appendChild(hero);
+
+  // Wrong words
+  if (wrongWords.length > 0) {
+    const card = document.createElement('div');
+    card.className = 'results-card';
+    card.innerHTML = `<div class="results-card-title">Words to practice (${wrongWords.length})</div>`;
+
+    const pillsWrap = document.createElement('div');
+    wrongWords.forEach(word => {
+      const pill = document.createElement('span');
+      pill.className = 'wrong-word-pill';
+      pill.textContent = word;
+      pillsWrap.appendChild(pill);
+    });
+    card.appendChild(pillsWrap);
+    screen.appendChild(card);
+  } else {
+    const perfect = document.createElement('div');
+    perfect.className = 'results-card text-center';
+    perfect.innerHTML = `
+      <div style="font-size:48px;">🎉</div>
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--bee-green);margin-top:8px;">Perfect Score!</div>
+      <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">All words correct!</div>
+    `;
+    screen.appendChild(perfect);
+  }
+
+  // Buttons
+  const btns = document.createElement('div');
+  btns.className = 'results-btns mt-16';
+
+  if (wrongWords.length > 0) {
+    const retryBtn = document.createElement('button');
+    retryBtn.className = 'btn btn-warning btn-full';
+    retryBtn.style.fontSize = '17px';
+    retryBtn.textContent = '🔄 Retry Wrong Words';
+    retryBtn.addEventListener('click', () => {
+      setState({
+        retryWords: shuffleWords(wrongWords),
+        currentWordIndex: 0,
+        sessionScore: 0,
+        wrongWords: [],
+        correctWords: [],
+        isPaused: false,
+      });
+      navigate('test');
+    });
+    btns.appendChild(retryBtn);
+  }
+
+  const homeBtn = document.createElement('button');
+  homeBtn.className = 'btn btn-primary btn-full';
+  homeBtn.style.fontSize = '17px';
+  homeBtn.textContent = '🏠 Home';
+  homeBtn.addEventListener('click', () => navigate('home'));
+  btns.appendChild(homeBtn);
+
+  screen.appendChild(btns);
+  container.appendChild(screen);
+}
+
+
+// ── history.js ──
+
+
+
+
+
+
+function formatDate(dateStr) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric'
+  });
+}
+
+async function renderHistory(container) {
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('home'));
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'History 🏆';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  const [history, topRecords] = await Promise.all([getAllHistory(), getTopRecords()]);
+
+  const total = history.length;
+  const bestScore = history.length > 0
+    ? Math.max(...history.map(e => e.total > 0 ? Math.round(e.score / e.total * 100) : 0))
+    : 0;
+  const avgAccuracy = history.length > 0
+    ? Math.round(history.reduce((acc, e) => acc + (e.total > 0 ? e.score / e.total * 100 : 0), 0) / history.length)
+    : 0;
+
+  const statsRow = document.createElement('div');
+  statsRow.className = 'history-stat-row';
+  statsRow.innerHTML = `
+    <div class="history-stat-card">
+      <div class="history-stat-val">${bestScore}%</div>
+      <div class="history-stat-label">Best Score</div>
+    </div>
+    <div class="history-stat-card">
+      <div class="history-stat-val">${total}</div>
+      <div class="history-stat-label">Attempts</div>
+    </div>
+    <div class="history-stat-card">
+      <div class="history-stat-val">${avgAccuracy}%</div>
+      <div class="history-stat-label">Avg Accuracy</div>
+    </div>
+  `;
+  screen.appendChild(statsRow);
+
+  if (topRecords.length > 0) {
+    const recordsHeading = document.createElement('div');
+    recordsHeading.className = 'section-heading';
+    recordsHeading.textContent = '🏅 Top Records';
+    screen.appendChild(recordsHeading);
+
+    topRecords.slice(0, 5).forEach((record, i) => {
+      const pct = record.total > 0 ? Math.round(record.score / record.total * 100) : 0;
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`;
+      const el = document.createElement('div');
+      el.className = 'history-record';
+      el.innerHTML = `
+        <div class="history-record-score">${medal}</div>
+        <div class="history-record-info">
+          <div class="history-record-list">${record.listName}</div>
+          <div class="history-record-date">${formatDate(record.date)} · ${record.score}/${record.total}</div>
+        </div>
+        <div class="history-record-badge">${pct}%</div>
+      `;
+      screen.appendChild(el);
+    });
+  }
+
+  if (history.length > 0) {
+    const recentHeading = document.createElement('div');
+    recentHeading.className = 'section-heading mt-16';
+    recentHeading.textContent = '📋 Recent Attempts';
+    screen.appendChild(recentHeading);
+
+    history.slice(0, 20).forEach(entry => {
+      const pct = entry.total > 0 ? Math.round(entry.score / entry.total * 100) : 0;
+      const stars = getStars(pct);
+      const el = document.createElement('div');
+      el.className = 'history-record';
+      el.innerHTML = `
+        <div class="history-record-score" style="font-size:18px;">${stars}</div>
+        <div class="history-record-info">
+          <div class="history-record-list">${entry.listName} · ${entry.mode === 'coach' ? '🧑' : '🎧'}</div>
+          <div class="history-record-date">${formatDate(entry.date)} · ${entry.score}/${entry.total}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div class="history-record-badge">${pct}%</div>
+          ${entry.wrongWords && entry.wrongWords.length > 0
+            ? `<div style="font-size:11px;color:var(--text-muted);font-weight:700;">${entry.wrongWords.length} wrong</div>`
+            : ''}
+        </div>
+      `;
+      if (entry.wrongWords && entry.wrongWords.length > 0) {
+        el.style.cursor = 'pointer';
+        el.title = 'Tap to retry wrong words';
+        el.addEventListener('click', () => {
+          setState({
+            retryWords: shuffleWords(entry.wrongWords),
+            currentWordIndex: 0,
+            sessionScore: 0,
+            wrongWords: [],
+            correctWords: [],
+            timerDuration: 10,
+            practiceMode: entry.mode || 'coach',
+          });
+          navigate('test');
+        });
+      }
+      screen.appendChild(el);
+    });
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `
+      <div class="empty-state-icon">📭</div>
+      <div class="empty-state-text">No history yet</div>
+      <div class="empty-state-sub">Complete a practice session to see results here</div>
+    `;
+    screen.appendChild(empty);
+  }
+
+  container.appendChild(screen);
+}
+
+
+// ── settings.js ──
+
+
+
+
+
+
+async function renderSettings(container) {
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('home'));
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'Settings ⚙️';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  const theme        = await getTheme();
+  const defaultTimer = await getDefaultTimer();
+  let voiceProfile   = await getVoiceProfile();
+  let voiceCountry   = await getVoiceCountry();
+
+  // ── Helpers ───────────────────────────────────────────────
+  function sectionLabel(text) {
+    const el = document.createElement('div');
+    el.style.cssText = 'font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--text-muted);text-transform:uppercase;padding:0 4px;margin:20px 0 8px;';
+    el.textContent = text;
+    return el;
+  }
+
+  function makeCard() {
+    const c = document.createElement('div');
+    c.style.cssText = 'background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);width:100%;';
+    return c;
+  }
+
+  function makeRow(borderTop = false) {
+    const r = document.createElement('div');
+    r.style.cssText = `display:flex;align-items:center;justify-content:space-between;padding:16px;gap:12px;${borderTop ? 'border-top:1px solid var(--border-color);' : ''}`;
+    return r;
+  }
+
+  function makeRowLeft(icon, titleText, subText) {
+    const left = document.createElement('div');
+    left.style.cssText = 'display:flex;align-items:center;gap:12px;flex:1;min-width:0;';
+    const iconEl = document.createElement('div');
+    iconEl.style.cssText = 'font-size:22px;width:32px;text-align:center;flex-shrink:0;';
+    iconEl.textContent = icon;
+    const textEl = document.createElement('div');
+    textEl.style.cssText = 'flex:1;min-width:0;';
+    const t = document.createElement('div');
+    t.style.cssText = 'font-size:15px;font-weight:700;color:var(--text-primary);';
+    t.textContent = titleText;
+    const s = document.createElement('div');
+    s.style.cssText = 'font-size:12px;font-weight:500;color:var(--text-muted);margin-top:2px;';
+    s.textContent = subText;
+    textEl.appendChild(t);
+    textEl.appendChild(s);
+    left.appendChild(iconEl);
+    left.appendChild(textEl);
+    return left;
+  }
+
+  // ══════════════════════════════════════
+  // APPEARANCE
+  // ══════════════════════════════════════
+  screen.appendChild(sectionLabel('Appearance'));
+  const appearCard = makeCard();
+  const darkRow = makeRow();
+  darkRow.appendChild(makeRowLeft('🌙', 'Dark Mode', 'Easier on the eyes at night'));
+  const toggle = document.createElement('label');
+  toggle.className = 'toggle';
+  toggle.style.flexShrink = '0';
+  toggle.innerHTML = `<input type="checkbox" id="dark-toggle"${theme === 'dark' ? ' checked' : ''}><div class="toggle-track"></div>`;
+  toggle.querySelector('#dark-toggle').addEventListener('change', async e => {
+    const t = e.target.checked ? 'dark' : 'light';
+    await saveTheme(t);
+    showToast(t === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+  });
+  darkRow.appendChild(toggle);
+  appearCard.appendChild(darkRow);
+  screen.appendChild(appearCard);
+
+  // ══════════════════════════════════════
+  // PRACTICE DEFAULTS
+  // ══════════════════════════════════════
+  screen.appendChild(sectionLabel('Practice Defaults'));
+  const timerCard = makeCard();
+  timerCard.style.padding = '16px';
+  const timerHeader = makeRowLeft('⏱', 'Default Timer', 'Time per word during practice');
+  timerHeader.style.marginBottom = '12px';
+  timerCard.appendChild(timerHeader);
+
+  let timerVal = defaultTimer;
+  const timerDisplay = document.createElement('div');
+  timerDisplay.style.cssText = 'font-size:36px;font-weight:900;color:var(--bee-purple);text-align:center;line-height:1;margin-bottom:10px;';
+  timerDisplay.textContent = timerVal === 0 ? 'Off' : timerVal + 's';
+  timerCard.appendChild(timerDisplay);
+
+  const timerSlider = document.createElement('input');
+  timerSlider.type = 'range';
+  timerSlider.className = 'slider';
+  timerSlider.min = 0; timerSlider.max = 20; timerSlider.step = 1;
+  timerSlider.value = timerVal;
+  timerSlider.style.width = '100%';
+  const updatePct = v => timerSlider.style.setProperty('--slider-pct', (v / 20 * 100) + '%');
+  updatePct(timerVal);
+  timerSlider.addEventListener('input', async () => {
+    timerVal = parseInt(timerSlider.value);
+    timerDisplay.textContent = timerVal === 0 ? 'Off' : timerVal + 's';
+    updatePct(timerVal);
+    await saveDefaultTimer(timerVal);
+  });
+  timerCard.appendChild(timerSlider);
+
+  const sliderLabels = document.createElement('div');
+  sliderLabels.className = 'slider-labels';
+  sliderLabels.innerHTML = '<span>Off</span><span>5s</span><span>10s</span><span>15s</span><span>20s</span>';
+  timerCard.appendChild(sliderLabels);
+  screen.appendChild(timerCard);
+
+  // ══════════════════════════════════════
+  // VOICE ACCENT
+  // ══════════════════════════════════════
+  screen.appendChild(sectionLabel('Voice Accent'));
+  const accentCard = makeCard();
+  accentCard.style.padding = '16px';
+  const accentGrid = document.createElement('div');
+  accentGrid.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';
+
+  const accents = [
+    { code: 'en-US', flag: '🇺🇸', label: 'American' },
+    { code: 'en-GB', flag: '🇬🇧', label: 'British'  },
+    { code: 'en-AU', flag: '🇦🇺', label: 'Australian' },
+  ];
+  const accentEls = {};
+
+  async function selectAccent(code) {
+    voiceCountry = code;
+    await saveVoiceCountry(code);
+    const prof = VOICE_PROFILES.find(p => p.id === voiceProfile);
+    const gender = prof ? prof.gender : 'female';
+    const newProf = (
+      VOICE_PROFILES.find(p => p.lang === code && p.gender === gender) ||
+      VOICE_PROFILES.find(p => p.lang === code) ||
+      VOICE_PROFILES[1]
+    );
+    voiceProfile = newProf.id;
+    await saveVoiceProfile(newProf.id);
+    setState({ voiceProfile: newProf.id });
+    await speakWord('spelling', newProf.id);
+  }
+
+  accents.forEach(a => {
+    const isSelected = a.code === voiceCountry;
+    const btn = document.createElement('button');
+    btn.style.cssText = `
+      flex:1;min-width:80px;display:flex;flex-direction:column;align-items:center;gap:6px;
+      padding:14px 8px;border-radius:var(--radius-md);cursor:pointer;transition:all 0.18s;
+      color:var(--text-primary);
+      background:${isSelected ? 'linear-gradient(135deg,rgba(175,82,222,0.10),rgba(102,126,234,0.06))' : 'var(--bg-primary)'};
+      border:2px solid ${isSelected ? 'var(--bee-purple)' : 'var(--border-color)'};
+      ${isSelected ? 'box-shadow:0 3px 12px rgba(175,82,222,0.18);' : ''}
+    `;
+    btn.innerHTML = `<span style="font-size:28px;">${a.flag}</span><span style="font-size:12px;font-weight:700;">${a.label}</span>`;
+    btn.addEventListener('click', async () => {
+      Object.values(accentEls).forEach(el => {
+        el.style.borderColor = 'var(--border-color)';
+        el.style.background = 'var(--bg-primary)';
+        el.style.boxShadow = '';
+      });
+      btn.style.borderColor = 'var(--bee-purple)';
+      btn.style.background = 'linear-gradient(135deg,rgba(175,82,222,0.10),rgba(102,126,234,0.06))';
+      btn.style.boxShadow = '0 3px 12px rgba(175,82,222,0.18)';
+      await selectAccent(a.code);
+      showToast(a.flag + ' ' + a.label + ' selected');
+    });
+    accentEls[a.code] = btn;
+    accentGrid.appendChild(btn);
+  });
+  accentCard.appendChild(accentGrid);
+  screen.appendChild(accentCard);
+
+  // ══════════════════════════════════════
+  // VOICES — install status + test
+  // ══════════════════════════════════════
+  screen.appendChild(sectionLabel('Voices'));
+
+  // Info box explaining how to install
+  const infoBox = document.createElement('div');
+  infoBox.style.cssText = `
+    background: rgba(102,126,234,0.08);
+    border: 1.5px solid rgba(102,126,234,0.20);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  `;
+  infoBox.innerHTML = `
+    <strong style="color:var(--text-primary);">🔊 Install voices for best quality</strong><br>
+    Tap <em>Open Voice Settings</em> → English → download <strong>Daniel</strong> (Man) 
+    and <strong>Samantha</strong> (Woman). Once installed they work offline forever.
+  `;
+  screen.appendChild(infoBox);
+
+  // Voice rows card
+  const voiceCard = makeCard();
+  const voiceRowsContainer = document.createElement('div');
+  voiceCard.appendChild(voiceRowsContainer);
+  screen.appendChild(voiceCard);
+
+  // Render/refresh voice status rows
+  async function renderVoiceRows() {
+    voiceRowsContainer.innerHTML = '';
+    const status = await checkInstalledVoices();
+
+    VOICE_PROFILES.forEach((profile, i) => {
+      const s = status[profile.id];
+      const row = makeRow(i > 0);
+
+      // Left: emoji + name + voice name
+      const left = document.createElement('div');
+      left.style.cssText = 'flex:1;min-width:0;';
+      left.innerHTML = `
+        <div style="font-size:14px;font-weight:700;color:var(--text-primary);">
+          ${profile.emoji} ${profile.label}
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+          ${s.voiceName}
+        </div>
+      `;
+      row.appendChild(left);
+
+      // Test button (only if installed)
+      if (s.installed) {
+        const testBtn = document.createElement('button');
+        testBtn.style.cssText = `
+          padding:5px 10px;border-radius:20px;font-size:12px;font-weight:700;
+          background:var(--bg-primary);color:var(--bee-purple);
+          border:1.5px solid var(--bee-purple);cursor:pointer;flex-shrink:0;margin-right:6px;
+        `;
+        testBtn.textContent = '▶ Test';
+        testBtn.addEventListener('click', () => speakWord('Hello, testing this voice now.', profile.id));
+        row.appendChild(testBtn);
+      }
+
+      // Status badge
+      const badge = document.createElement('div');
+      badge.style.cssText = `
+        padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;flex-shrink:0;
+        background:${s.installed ? 'rgba(52,199,89,0.12)' : 'rgba(255,149,0,0.10)'};
+        color:${s.installed ? 'var(--bee-green)' : 'var(--bee-orange)'};
+        border:1.5px solid ${s.installed ? 'rgba(52,199,89,0.3)' : 'rgba(255,149,0,0.3)'};
+      `;
+      badge.textContent = s.installed ? '✓ Ready' : '⬇ Install';
+      row.appendChild(badge);
+
+      voiceRowsContainer.appendChild(row);
+    });
+  }
+
+  await renderVoiceRows();
+
+  // Buttons row: Open Settings + Refresh
+  const voiceBtnsRow = document.createElement('div');
+  voiceBtnsRow.style.cssText = 'display:flex;gap:10px;margin-top:10px;';
+
+  const openSettingsBtn = document.createElement('button');
+  openSettingsBtn.className = 'btn btn-primary';
+  openSettingsBtn.style.cssText = 'flex:1;font-size:14px;padding:13px 10px;';
+  openSettingsBtn.innerHTML = '⚙️ Open Voice Settings';
+  openSettingsBtn.addEventListener('click', () => {
+    if (window.Capacitor?.Plugins?.App) {
+      window.Capacitor.Plugins.App.openUrl({ url: 'App-prefs:ACCESSIBILITY&path=SPEECH' });
+    } else {
+      alert('Go to:\nSettings → Accessibility → Spoken Content → Voices → English\n\nDownload "Daniel" (Man) and "Samantha" (Woman).');
+    }
+  });
+  voiceBtnsRow.appendChild(openSettingsBtn);
+
+  const refreshBtn = document.createElement('button');
+  refreshBtn.className = 'btn btn-ghost';
+  refreshBtn.style.cssText = 'flex-shrink:0;font-size:14px;padding:13px 14px;';
+  refreshBtn.textContent = '🔄';
+  refreshBtn.title = 'Refresh voice status';
+  refreshBtn.addEventListener('click', async () => {
+    refreshBtn.textContent = '⏳';
+    refreshBtn.disabled = true;
+    await renderVoiceRows();
+    refreshBtn.textContent = '🔄';
+    refreshBtn.disabled = false;
+    showToast('Voice status refreshed');
+  });
+  voiceBtnsRow.appendChild(refreshBtn);
+
+  screen.appendChild(voiceBtnsRow);
+
+  // ══════════════════════════════════════
+  // ABOUT
+  // ══════════════════════════════════════
+  screen.appendChild(sectionLabel('About'));
+  const aboutCard = makeCard();
+
+  const aboutRow1 = makeRow();
+  aboutRow1.appendChild(makeRowLeft('🐝', 'Al Jbour Spelling Bee', 'No subscription · No ads · Made with ❤️'));
+  const badge = document.createElement('div');
+  badge.style.cssText = 'font-size:12px;font-weight:700;color:var(--text-muted);background:var(--bg-primary);border-radius:20px;padding:4px 10px;flex-shrink:0;';
+  badge.textContent = 'v1.0';
+  aboutRow1.appendChild(badge);
+  aboutCard.appendChild(aboutRow1);
+
+  const aboutRow2 = makeRow(true);
+  aboutRow2.appendChild(makeRowLeft('🌷', 'حياكم', 'Supporting education in our community'));
+  aboutCard.appendChild(aboutRow2);
+  screen.appendChild(aboutCard);
+
+  const spacer = document.createElement('div');
+  spacer.style.height = '40px';
+  screen.appendChild(spacer);
+
+  container.appendChild(screen);
+}
+
+
+// ── listManagement.js ──
+
+
+
+
+
+
+
+async function renderListManagement(container) {
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  const header = document.createElement('div');
+  header.className = 'screen-header';
+  header.appendChild(BackButton('home'));
+  const title = document.createElement('div');
+  title.className = 'screen-title';
+  title.textContent = 'My Lists 📚';
+  header.appendChild(title);
+  screen.appendChild(header);
+
+  // State
+  let selectedList = null;
+  let lists = await getAllLists();
+
+  // ---- Top actions ----
+  const topActions = document.createElement('div');
+  topActions.className = 'list-mgmt-actions';
+
+  const createBtn = document.createElement('button');
+  createBtn.className = 'btn btn-primary';
+  createBtn.textContent = '＋ New List';
+
+  const importBtn = document.createElement('button');
+  importBtn.className = 'btn btn-ghost';
+  importBtn.textContent = '📥 Import';
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.txt,.csv';
+  fileInput.style.display = 'none';
+
+  topActions.appendChild(createBtn);
+  topActions.appendChild(importBtn);
+  topActions.appendChild(fileInput);
+  screen.appendChild(topActions);
+
+  // ---- Lists container ----
+  const listsContainer = document.createElement('div');
+  screen.appendChild(listsContainer);
+
+  // ---- Word editor (shown when a list is selected) ----
+  const editorSection = document.createElement('div');
+  editorSection.style.display = 'none';
+  screen.appendChild(editorSection);
+
+  // ---- Render lists ----
+  function renderLists() {
+    listsContainer.innerHTML = '';
+
+    if (lists.length === 0) {
+      listsContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <div class="empty-state-text">No lists yet</div>
+          <div class="empty-state-sub">Tap "New List" to get started</div>
+        </div>
+      `;
+      return;
+    }
+
+    const label = document.createElement('div');
+    label.className = 'section-heading';
+    label.textContent = 'Your lists';
+    listsContainer.appendChild(label);
+
+    lists.forEach(list => {
+      const card = ListCard({
+        list,
+        showActions: true,
+        selected: selectedList && selectedList.id === list.id,
+        onEdit: (l) => openEditor(l),
+        onDelete: (l) => confirmDelete(l),
+      });
+      card.addEventListener('click', () => openEditor(list));
+      listsContainer.appendChild(card);
+    });
+  }
+
+  // ---- Open editor ----
+  async function openEditor(list) {
+    selectedList = await getList(list.id);
+    editorSection.style.display = 'block';
+    renderEditor();
+    editorSection.scrollIntoView({ behavior: 'smooth' });
+    renderLists();
+  }
+
+  function renderEditor() {
+    if (!selectedList) return;
+    editorSection.innerHTML = '';
+
+    const editorTitle = document.createElement('div');
+    editorTitle.className = 'screen-header';
+    editorTitle.style.marginTop = '16px';
+
+    const edIcon = document.createElement('span');
+    edIcon.textContent = selectedList.icon || '📚';
+    edIcon.style.fontSize = '28px';
+
+    const edName = document.createElement('div');
+    edName.className = 'screen-title';
+    edName.style.fontSize = '20px';
+    edName.textContent = selectedList.name;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'back-btn';
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', () => {
+      editorSection.style.display = 'none';
+      selectedList = null;
+      renderLists();
+    });
+
+    editorTitle.appendChild(edIcon);
+    editorTitle.appendChild(edName);
+    editorTitle.appendChild(closeBtn);
+    editorSection.appendChild(editorTitle);
+
+    // Word count
+    const countEl = document.createElement('div');
+    countEl.className = 'section-heading';
+    countEl.textContent = `${selectedList.words.length} words`;
+    editorSection.appendChild(countEl);
+
+    // Words display
+    const wordsWrap = document.createElement('div');
+    wordsWrap.className = 'words-container';
+
+    function renderWordPills() {
+      wordsWrap.innerHTML = '';
+      if (selectedList.words.length === 0) {
+        wordsWrap.innerHTML = '<div style="color:var(--text-muted);font-size:14px;font-weight:600;text-align:center;padding:16px;">No words yet. Add some below!</div>';
+        return;
+      }
+      selectedList.words.forEach(word => {
+        const pill = document.createElement('span');
+        pill.className = 'word-pill';
+        const displayWord = word.charAt(0).toUpperCase() + word.slice(1);
+        pill.innerHTML = `${displayWord} <button class="word-pill-del" data-word="${word}">✕</button>`;
+        pill.querySelector('.word-pill-del').addEventListener('click', async () => {
+          selectedList = await removeWordFromList(selectedList.id, word);
+          countEl.textContent = `${selectedList.words.length} words`;
+          renderWordPills();
+          refreshLists();
+        });
+        wordsWrap.appendChild(pill);
+      });
+    }
+
+    renderWordPills();
+    editorSection.appendChild(wordsWrap);
+
+    // Add word input
+    const addRow = document.createElement('div');
+    addRow.className = 'flex gap-8 mb-12';
+
+    const addInput = document.createElement('input');
+    addInput.className = 'modal-input';
+    addInput.style.margin = '0';
+    addInput.style.flex = '1';
+    addInput.placeholder = 'Type a word...';
+    addInput.autocorrect = 'off';
+    addInput.autocapitalize = 'off';
+    addInput.spellcheck = false;
+
+    const addWordBtn = document.createElement('button');
+    addWordBtn.className = 'btn btn-primary';
+    addWordBtn.textContent = '＋ Add';
+
+    const doAddWord = async () => {
+      const word = addInput.value.trim().toLowerCase();
+      if (!word) return;
+      if (selectedList.words.includes(word)) {
+        showToast('Word already in list!');
+        return;
+      }
+      selectedList = await addWordToList(selectedList.id, word);
+      addInput.value = '';
+      countEl.textContent = `${selectedList.words.length} words`;
+      renderWordPills();
+      refreshLists();
+    };
+
+    addWordBtn.addEventListener('click', doAddWord);
+    addInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doAddWord(); });
+
+    addRow.appendChild(addInput);
+    addRow.appendChild(addWordBtn);
+    editorSection.appendChild(addRow);
+  }
+
+  // ---- Confirm delete ----
+  function confirmDelete(list) {
+    showModal({
+      title: `Delete "${list.name}"?`,
+      confirmLabel: '🗑️ Delete',
+      confirmClass: 'btn-danger',
+      onConfirm: async () => {
+        await removeList(list.id);
+        if (selectedList && selectedList.id === list.id) {
+          editorSection.style.display = 'none';
+          selectedList = null;
+        }
+        await refreshLists();
+        showToast('List deleted');
+      }
+    });
+  }
+
+  // ---- Create list modal ----
+  createBtn.addEventListener('click', () => {
+    showModal({
+      title: 'New List',
+      inputPlaceholder: 'List name...',
+      confirmLabel: '✨ Create',
+      confirmClass: 'btn-primary',
+      onConfirm: async (name) => {
+        if (!name || !name.trim()) { showToast('Please enter a name'); return; }
+        const newList = await createList(name.trim());
+        await refreshLists();
+        await openEditor(newList);
+        showToast(`"${newList.name}" created!`);
+      }
+    });
+  });
+
+  // ---- Import ----
+  importBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const text = await file.text();
+    let words = [];
+
+    if (file.name.endsWith('.csv')) {
+      words = text.split(/[\n,]/).map(w => w.trim().replace(/"/g, '').toLowerCase()).filter(Boolean);
+    } else {
+      words = text.split(/\n/).map(w => w.trim().toLowerCase()).filter(Boolean);
+    }
+
+    words = [...new Set(words)]; // deduplicate
+
+    const listName = file.name.replace(/\.(txt|csv)$/i, '');
+    const newList = await createList(listName, words);
+    await refreshLists();
+    await openEditor(newList);
+    showToast(`Imported ${words.length} words!`);
+    fileInput.value = '';
+  });
+
+  async function refreshLists() {
+    lists = await getAllLists();
+    renderLists();
+  }
+
+  renderLists();
+  container.appendChild(screen);
+}
+
+// ---- Modal helper ----
+function showModal({ title, inputPlaceholder, confirmLabel, confirmClass, onConfirm }) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+
+  const modalTitle = document.createElement('div');
+  modalTitle.className = 'modal-title';
+  modalTitle.textContent = title;
+  box.appendChild(modalTitle);
+
+  let inputEl = null;
+  if (inputPlaceholder) {
+    inputEl = document.createElement('input');
+    inputEl.className = 'modal-input';
+    inputEl.placeholder = inputPlaceholder;
+    inputEl.autocorrect = 'off';
+    inputEl.spellcheck = false;
+    box.appendChild(inputEl);
+    setTimeout(() => inputEl.focus(), 100);
+  }
+
+  const btns = document.createElement('div');
+  btns.className = 'modal-btns';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'btn btn-ghost';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', () => overlay.remove());
+
+  const confirmBtn = document.createElement('button');
+  confirmBtn.className = `btn ${confirmClass}`;
+  confirmBtn.textContent = confirmLabel;
+  confirmBtn.addEventListener('click', () => {
+    overlay.remove();
+    onConfirm(inputEl ? inputEl.value : null);
+  });
+
+  if (inputEl) {
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') confirmBtn.click();
+    });
+  }
+
+  btns.appendChild(cancelBtn);
+  btns.appendChild(confirmBtn);
+  box.appendChild(btns);
+
+  overlay.appendChild(box);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+
+// ── Router ──
+const routes = {
+  splash:         renderSplash,
+  home:           renderHome,
+  practice:       renderPractice,
+  setup:          renderSetup,
+  test:           renderTest,
+  results:        renderResults,
+  history:        renderHistory,
+  settings:       renderSettings,
+  listManagement: renderListManagement,
+};
+
+const appEl = document.getElementById('app');
+
+function navigate(screen, params = {}) {
+  const renderer = routes[screen];
+  if (!renderer) { console.error('No route:', screen); return; }
+  appEl.innerHTML = '';
+  renderer(appEl, params);
+}
+
+// ── Init ──
+async function init() {
+  try {
+    const theme = await getSetting('theme');
+    const defaultTimer = await getSetting('defaultTimer');
+    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+    setState({ theme: theme || 'light' });
+    if (defaultTimer !== null) setState({ defaultTimer, timerDuration: defaultTimer });
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+  navigate('splash');
+}
+
+init();
+
+  </script>
+</body>
+</html>
